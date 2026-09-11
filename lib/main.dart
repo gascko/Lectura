@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lectura/pages/createEvaluationPage.dart';
 import 'variables.dart';
-import 'package:flutter/services.dart';
 import 'pages/settingsPage.dart';
 
 class AppTheme {
@@ -37,24 +36,25 @@ class AppTheme {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await themeNotifier.loadMode();
+  await topicNotifier.setInitTopics();
   runApp(
       MaterialApp(
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
         themeMode: themeNotifier.mode,
-        home: lecturaApp(),
+        home: LecturaApp(),
       )
   );
 }
 
-class lecturaApp extends StatelessWidget {
-  const lecturaApp({super.key});
+class LecturaApp extends StatelessWidget {
+  const LecturaApp({super.key});
 
   final List<Map<String, dynamic>> items = const [
-    {'title': 'Fragen & Themen', 'page': settingsPage(), 'icon': Icons.edit},
-    {'title': 'Ergebnisse', 'page': settingsPage(), 'icon': Icons.bar_chart},
-    {'title': 'Import & Export', 'page': settingsPage(), 'icon': Icons.share},
-    {'title': 'Einstellungen', 'page': settingsPage(), 'icon': Icons.settings},
+    {'title': 'Fragen & Themen', 'page': SettingsPage(), 'icon': Icons.edit},
+    {'title': 'Ergebnisse', 'page': SettingsPage(), 'icon': Icons.bar_chart},
+    {'title': 'Import & Export', 'page': SettingsPage(), 'icon': Icons.share},
+    {'title': 'Einstellungen', 'page': SettingsPage(), 'icon': Icons.settings},
   ];
 
   @override
@@ -87,7 +87,7 @@ class lecturaApp extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
-                    builder: (context) => createEvaluationPage(),
+                    builder: (context) => CreateEvaluationPage(),
                   ),
                 );
               },
@@ -208,7 +208,7 @@ class CourseCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => settingsPage()),
+            MaterialPageRoute(builder: (context) => SettingsPage()),
           );
         },
         child: Padding(

@@ -1,8 +1,37 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
+class TopicsNotifier with ChangeNotifier {
+  List<String> topics = List.empty();
+  List<String> get topic => topics;
 
-class SavedColorSchemeModeNotifier with ChangeNotifier {
+  Future<List<String>> loadTopics() async {
+    final storage = await SharedPreferences.getInstance();
+    List<String> storageTopics = storage.getStringList('topics') ?? List.empty();
+    topics = storageTopics;
+    notifyListeners();
+    return topics;
+  }
+
+  Future<void> setInitTopics() async {
+    final storage = await SharedPreferences.getInstance();
+    final isFirstStart = storage.getBool('isFirstStart') ?? true;
+
+    if (isFirstStart) {
+      List<String> initTopics = [
+        "Verständlichkeit",
+        "Vortrag",
+        "Präsentation",
+        "Lernmaterialien"
+      ];
+      await storage.setStringList('topics', initTopics);
+      await storage.setBool("isFirstStart", false);
+    }
+  }
+  notifyListeners();
+}
+
+class ColorThemeNotifier with ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
   ThemeMode get mode => themeMode;
 

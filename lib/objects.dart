@@ -1,10 +1,5 @@
-class Question {
-  late String topic;
-  late String question;
-}
-
 class Evaluation {
-  late List<Question> questions;
+  late List<String> questions;
   late int numberOfQuestions;
   late List<int> results;
 }

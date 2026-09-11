@@ -1,2 +1,3 @@
 import 'storage.dart';
-final themeNotifier = SavedColorSchemeModeNotifier();
+final themeNotifier = ColorThemeNotifier();
+final topicNotifier = TopicsNotifier();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../variables.dart';
 
-class settingsPage extends StatelessWidget {
-  const settingsPage({super.key});
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
