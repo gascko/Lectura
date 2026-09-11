@@ -14,12 +14,6 @@ dart pub get
 
 ## Mockup (Pretotype)
 
-| Landing Page                       | Create new Evaluation                         | Question Selection                             | Start Evaluation                             | Evaluation Page                                 | End Evaluation                                | Evaluation Diagrams                             | History Page                                   | Import / Export Page                      | Settings Page                        |
-|------------------------------------|-----------------------------------------------|------------------------------------------------|----------------------------------------------|-------------------------------------------------|-----------------------------------------------|-------------------------------------------------|------------------------------------------------|-------------------------------------------|--------------------------------------|
-| ![](assets/Mockup_Lading_Page.png) | ![](assets/Mockup_Create_Evaluation_Page.png) | ![](assets/Mockup_Question_Selection_Page.png) | ![](assets/Mockup_Evaluation_Start_Page.png) | ![](assets/Mockup_Evaluation_Question_Page.png) | ![](assets/Mockup_Evaluation_Ending_Page.png) | ![](assets/Mockup_Evaluation_Diagram_Page.png)  | ![](assets/Mockup_Evaluation_History_Page.png) | ![](assets/Mockup_Import_Export_Page.png) | ![](assets/Mockup_Settings_Page.png) |
+> See [DrawIO Mockup](./Mockup.drawio)
 
-> Mockup created with OpenAI ChatGPT 5
-
-````text
-Erstelle mir ein Mockup für...
-````
+> All Images in the Mockup are AI generated, see our [AI History](./AI_History.md) for detailed prompts used
