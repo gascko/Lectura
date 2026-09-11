@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lectura/pages/createEvaluationPage.dart';
 import 'variables.dart';
 import 'package:flutter/services.dart';
 import 'pages/settingsPage.dart';
@@ -86,7 +87,7 @@ class lecturaApp extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
-                    builder: (context) => settingsPage(),
+                    builder: (context) => createEvaluationPage(),
                   ),
                 );
               },
