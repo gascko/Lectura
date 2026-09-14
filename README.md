@@ -12,8 +12,6 @@ dart pub add dart pub add shared_preferences flutter_launcher_icons
 dart pub get
 ````
 
-## Mockup (Pretotype)
+## Process
 
-> See [DrawIO Mockup](./Mockup.drawio)
-
-> All Images in the Mockup are AI generated, see our [AI History](./AI_History.md) for detailed prompts used
+> To see our Mockup Versions and our Storyboard have a look at  [our Process DrawIO](./Process.drawio)
