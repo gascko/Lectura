@@ -1,5 +1,39 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+
+class QuestionNotifier with ChangeNotifier {
+  List<String> questions = List.empty();
+  List <String> get question => questions;
+
+  Future<List<String>> loadQuestions(String topic) async {
+    final storage = await SharedPreferences.getInstance();
+    List<String> storageTopics = storage.getStringList(topic) ?? List.empty();
+    questions = storageTopics;
+    notifyListeners();
+    return questions;
+  }
+}
+
+void initStorage() async {
+  final storage = await SharedPreferences.getInstance();
+  final isFirstStart = storage.getBool('isFirstStart') ?? true;
+
+  if (isFirstStart) {
+    String jsonString = await rootBundle.loadString('assets/Init.json');
+    final Map<String, dynamic> data = jsonDecode(jsonString);
+
+    await storage.setStringList('topics', data.keys.toList());
+
+    for (var entry in data.entries) {
+      List<String> questions = List<String>.from(entry.value);
+      storage.setStringList(entry.key, questions);
+    }
+
+    //await storage.setBool("isFirstStart", false);
+  }
+}
 
 class TopicsNotifier with ChangeNotifier {
   List<String> topics = List.empty();
@@ -12,23 +46,6 @@ class TopicsNotifier with ChangeNotifier {
     notifyListeners();
     return topics;
   }
-
-  Future<void> setInitTopics() async {
-    final storage = await SharedPreferences.getInstance();
-    final isFirstStart = storage.getBool('isFirstStart') ?? true;
-
-    if (isFirstStart) {
-      List<String> initTopics = [
-        "Verständlichkeit",
-        "Vortrag",
-        "Präsentation",
-        "Lernmaterialien"
-      ];
-      await storage.setStringList('topics', initTopics);
-      await storage.setBool("isFirstStart", false);
-    }
-  }
-  notifyListeners();
 }
 
 class ColorThemeNotifier with ChangeNotifier {

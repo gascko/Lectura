@@ -1,0 +1,26 @@
+{
+  "Verständlichkeit": [
+    "Hat der Professor deutlich gesprochen?",
+    "Waren die Erklärungen leicht verständlich?",
+    "Wurden komplexe Themen nachvollziehbar vermittelt?",
+    "Konnte den Ausführungen während der Vorlesung gut gefolgt werden?"
+  ],
+  "Vortrag": [
+    "Wie war die Vortragsweise?",
+    "War der Vortrag interessant und motivierend gestaltet?",
+    "Wurde die Vorlesungszeit sinnvoll genutzt?",
+    "Ging der Professor angemessen auf Fragen ein?"
+  ],
+  "Präsentation": [
+    "Waren die Folien übersichtlich gestaltet?",
+    "Unterstützten die Präsentationsunterlagen das Verständnis der Inhalte?",
+    "Waren Schriftgröße und Lesbarkeit der Folien angemessen?",
+    "Wurden Grafiken und Beispiele sinnvoll eingesetzt?"
+  ],
+  "Lernmaterialien": [
+    "Die mitgegebenen Begleitmaterialien waren hilfreich",
+    "Waren die bereitgestellten Materialien vollständig?",
+    "Waren die Lernmaterialien gut strukturiert?",
+    "Haben die Materialien die Prüfungsvorbereitung unterstützt?"
+  ]
+}

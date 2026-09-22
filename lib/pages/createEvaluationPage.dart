@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:horizontal_stepper_flutter/horizontal_stepper_flutter.dart';
+import 'package:lectura/objects.dart';
 import '../variables.dart';
 
 int currentStep = 0;
+Evaluation newEvaluation = Evaluation();
 
 class CreateEvaluationPage extends StatefulWidget {
   const CreateEvaluationPage({super.key});
@@ -14,7 +16,7 @@ class CreateEvaluationPage extends StatefulWidget {
 class CreateEvaluationPageState extends State<CreateEvaluationPage> {
   CreateEvaluationPageState();
 
-  final steps = [
+  var steps = [
     (title: 'Thema', page: TopicStep()),
     (title: 'Fragen', page: QuestionSelectionStep()),
   ];
@@ -56,11 +58,11 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
                     }
                   });
                 },
-                child: Text("Weiter"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 ),
+                child: Text("Weiter"),
               ),
             ),
           ],
@@ -81,7 +83,7 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 30),
-            steps[currentStep].page,
+            Expanded(child: steps[currentStep].page),
           ],
         ),
       ),
@@ -125,12 +127,26 @@ class TopicStep extends StatefulWidget {
 }
 
 class TopicStepState extends State<TopicStep> {
-  int? _value = 1;
+  String selectedTopic = "";
+  late Future<List<String>> topicsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    topicsFuture = topicNotifier.loadTopics().then((topics) {
+      if (topics.isNotEmpty) {
+        selectedTopic = topics.first;
+        newEvaluation.topic = topics.first;
+      }
+      return topics;
+    });
+  }
 
   @override
   build(BuildContext context) {
     return FutureBuilder<List<String>>(
-      future: topicNotifier.loadTopics(),
+      future: topicsFuture,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const CircularProgressIndicator();
@@ -144,15 +160,16 @@ class TopicStepState extends State<TopicStep> {
               selectedColor: Theme.of(context).colorScheme.primary,
               showCheckmark: false,
               padding: EdgeInsets.all(15),
-              selected: _value == index,
+              selected: selectedTopic == snapshot.data![index],
               labelStyle: TextStyle(
-                color: _value == index
+                color: selectedTopic == snapshot.data![index]
                     ? Theme.of(context).colorScheme.onPrimary
                     : Theme.of(context).colorScheme.primary,
               ),
               onSelected: (bool selected) {
                 setState(() {
-                  _value = selected ? index : null;
+                  selectedTopic = snapshot.data![index];
+                  newEvaluation.topic = selectedTopic;
                 });
               },
             );
@@ -163,11 +180,103 @@ class TopicStepState extends State<TopicStep> {
   }
 }
 
-class QuestionSelectionStep extends StatelessWidget {
+class QuestionSelectionStep extends StatefulWidget {
   const QuestionSelectionStep({super.key});
 
   @override
+  QuestionSelectionStepState createState() => QuestionSelectionStepState();
+}
+
+class QuestionSelectionStepState extends State<StatefulWidget> {
+  bool randomQuestions = true;
+  late Future<List<String>> questionsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    questionsFuture = questionNotifier.loadQuestions(newEvaluation.topic).then((
+      questions,
+    ) {
+      return questions;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Row(children: [Text("Step 2")]);
+    return FutureBuilder<List<String>>(
+      future: questionsFuture,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Column(
+          children: [
+            RadioGroup<bool>(
+              groupValue: randomQuestions,
+              onChanged: (bool? value) {
+                setState(() {
+                  randomQuestions = value!;
+                });
+              },
+              child: const Column(
+                children: <Widget>[
+                  RadioListTile<bool>(
+                    title: Text('Zufällige Fragen aus dem Pool'),
+                    value: true,
+                  ),
+                  RadioListTile<bool>(
+                    title: Text("Fragen auswählen"),
+                    value: false,
+                  ),
+                ],
+              ),
+            ),
+            if (!randomQuestions)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                "${newEvaluation.questions.length}/${numberOfQuestions} ausgewählt",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+            if (!randomQuestions)
+              Expanded(
+              child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                itemCount: snapshot.data!.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 4),
+                itemBuilder: (context, index) {
+                  return ChoiceChip(
+                    label: Text(snapshot.data![index]),
+                    selected: newEvaluation.questions.contains(
+                      snapshot.data![index],
+                    ),
+                    onSelected: (bool selected) {
+                      setState(() {
+                        if (newEvaluation.questions.contains(
+                          snapshot.data![index],
+                        )) {
+                          newEvaluation.questions.remove(snapshot.data![index]);
+                        } else {
+                          if (newEvaluation.questions.length <
+                              numberOfQuestions) {
+                            newEvaluation.questions.add(snapshot.data![index]);
+                          }
+                        }
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

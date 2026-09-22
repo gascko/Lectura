@@ -1,5 +1,6 @@
 class Evaluation {
-  late List<String> questions;
-  late int numberOfQuestions;
-  late List<int> results;
+  DateTime evaluationDateTime = DateTime.now();
+  String topic = "";
+  List<String> questions = [];
+  List<int> results = [];
 }

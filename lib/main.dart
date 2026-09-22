@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lectura/pages/createEvaluationPage.dart';
+import 'package:lectura/storage.dart';
 import 'variables.dart';
 import 'pages/settingsPage.dart';
 
@@ -36,7 +37,7 @@ class AppTheme {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await themeNotifier.loadMode();
-  await topicNotifier.setInitTopics();
+  initStorage();
   runApp(
       MaterialApp(
         theme: AppTheme.light(),
@@ -51,9 +52,7 @@ class LecturaApp extends StatelessWidget {
   const LecturaApp({super.key});
 
   final List<Map<String, dynamic>> items = const [
-    {'title': 'Fragen & Themen', 'page': SettingsPage(), 'icon': Icons.edit},
     {'title': 'Ergebnisse', 'page': SettingsPage(), 'icon': Icons.bar_chart},
-    {'title': 'Import & Export', 'page': SettingsPage(), 'icon': Icons.share},
     {'title': 'Einstellungen', 'page': SettingsPage(), 'icon': Icons.settings},
   ];
 
