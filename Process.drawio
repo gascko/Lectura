@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2" pages="2">
   <diagram name="Mockup" id="gYJhnL97rc1fMtepLHHy">
-    <mxGraphModel dx="2646" dy="1762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="583" math="0" shadow="0">
+    <mxGraphModel dx="2071" dy="1416" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="583" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -244,6 +244,9 @@
         </mxCell>
         <mxCell id="RtjDs6z4eNx0HhNr2in5-27" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Anzahl der Fragen muss&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;&amp;nbsp;geprüft werden&lt;/span&gt;&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="690" y="-844.22" width="125" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="-ZK9IhvMFIvEGaUd88W0-1" value="" style="triangle;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;direction=north;" vertex="1" parent="1">
+          <mxGeometry x="610" y="-863.44" width="35" height="19.22" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

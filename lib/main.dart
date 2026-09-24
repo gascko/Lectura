@@ -48,10 +48,17 @@ void main() async {
   );
 }
 
-class LecturaApp extends StatelessWidget {
+class LecturaApp extends StatefulWidget {
   const LecturaApp({super.key});
 
-  final List<Map<String, dynamic>> items = const [
+  @override
+  State<LecturaApp> createState() => LecturaAppState();
+}
+
+class LecturaAppState extends State<LecturaApp> {
+  LecturaAppState();
+
+  List<Map<String, dynamic>> items = [
     {'title': 'Ergebnisse', 'page': SettingsPage(), 'icon': Icons.bar_chart},
     {'title': 'Einstellungen', 'page': SettingsPage(), 'icon': Icons.settings},
   ];
@@ -84,9 +91,9 @@ class LecturaApp extends StatelessWidget {
               ),
 
               onPressed: () {
-                Navigator.of(context, rootNavigator: true).push(
+                Navigator.push(context,
                   MaterialPageRoute(
-                    builder: (context) => CreateEvaluationPage(),
+                    builder: (context) => const CreateEvaluationPage(),
                   ),
                 );
               },

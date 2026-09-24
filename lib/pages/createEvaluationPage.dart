@@ -3,9 +3,6 @@ import 'package:horizontal_stepper_flutter/horizontal_stepper_flutter.dart';
 import 'package:lectura/objects.dart';
 import '../variables.dart';
 
-int currentStep = 0;
-Evaluation newEvaluation = Evaluation();
-
 class CreateEvaluationPage extends StatefulWidget {
   const CreateEvaluationPage({super.key});
 
@@ -16,9 +13,12 @@ class CreateEvaluationPage extends StatefulWidget {
 class CreateEvaluationPageState extends State<CreateEvaluationPage> {
   CreateEvaluationPageState();
 
-  var steps = [
-    (title: 'Thema', page: TopicStep()),
-    (title: 'Fragen', page: QuestionSelectionStep()),
+  int currentStep = 0;
+  Evaluation newEvaluation = Evaluation();
+
+  late var steps = [
+    (title: 'Thema', page: TopicStep(newEvaluation: newEvaluation)),
+    (title: 'Fragen', page: QuestionSelectionStep(newEvaluation: newEvaluation)),
   ];
 
   @override
@@ -120,7 +120,8 @@ class CreationStepper extends StatelessWidget {
 }
 
 class TopicStep extends StatefulWidget {
-  const TopicStep({super.key});
+  final Evaluation newEvaluation;
+  const TopicStep({super.key, required this.newEvaluation});
 
   @override
   State<TopicStep> createState() => TopicStepState();
@@ -137,7 +138,7 @@ class TopicStepState extends State<TopicStep> {
     topicsFuture = topicNotifier.loadTopics().then((topics) {
       if (topics.isNotEmpty) {
         selectedTopic = topics.first;
-        newEvaluation.topic = topics.first;
+        widget.newEvaluation.topic = topics.first;
       }
       return topics;
     });
@@ -169,7 +170,7 @@ class TopicStepState extends State<TopicStep> {
               onSelected: (bool selected) {
                 setState(() {
                   selectedTopic = snapshot.data![index];
-                  newEvaluation.topic = selectedTopic;
+                  widget.newEvaluation.topic = selectedTopic;
                 });
               },
             );
@@ -181,13 +182,14 @@ class TopicStepState extends State<TopicStep> {
 }
 
 class QuestionSelectionStep extends StatefulWidget {
-  const QuestionSelectionStep({super.key});
+  final Evaluation newEvaluation;
+  const QuestionSelectionStep({super.key, required this.newEvaluation});
 
   @override
   QuestionSelectionStepState createState() => QuestionSelectionStepState();
 }
 
-class QuestionSelectionStepState extends State<StatefulWidget> {
+class QuestionSelectionStepState extends State<QuestionSelectionStep> {
   bool randomQuestions = true;
   late Future<List<String>> questionsFuture;
 
@@ -195,7 +197,7 @@ class QuestionSelectionStepState extends State<StatefulWidget> {
   void initState() {
     super.initState();
 
-    questionsFuture = questionNotifier.loadQuestions(newEvaluation.topic).then((
+    questionsFuture = questionNotifier.loadQuestions(widget.newEvaluation.topic).then((
       questions,
     ) {
       return questions;
@@ -236,7 +238,7 @@ class QuestionSelectionStepState extends State<StatefulWidget> {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                "${newEvaluation.questions.length}/${numberOfQuestions} ausgewählt",
+                "${widget.newEvaluation.questions.length}/${numberOfQuestions} ausgewählt",
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -253,19 +255,19 @@ class QuestionSelectionStepState extends State<StatefulWidget> {
                 itemBuilder: (context, index) {
                   return ChoiceChip(
                     label: Text(snapshot.data![index]),
-                    selected: newEvaluation.questions.contains(
+                    selected: widget.newEvaluation.questions.contains(
                       snapshot.data![index],
                     ),
                     onSelected: (bool selected) {
                       setState(() {
-                        if (newEvaluation.questions.contains(
+                        if (widget.newEvaluation.questions.contains(
                           snapshot.data![index],
                         )) {
-                          newEvaluation.questions.remove(snapshot.data![index]);
+                          widget.newEvaluation.questions.remove(snapshot.data![index]);
                         } else {
-                          if (newEvaluation.questions.length <
+                          if (widget.newEvaluation.questions.length <
                               numberOfQuestions) {
-                            newEvaluation.questions.add(snapshot.data![index]);
+                            widget.newEvaluation.questions.add(snapshot.data![index]);
                           }
                         }
                       });
