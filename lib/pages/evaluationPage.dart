@@ -22,67 +22,83 @@ class evaluationPageState extends State<EvaluationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
-        onPressed: exitEvaluation,
-        child: Icon(Icons.exit_to_app),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          spacing: 20,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    child: Text("Weiter"),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    child: Text("Weiter"),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                "Frage ${currentQuestion} von ${widget.evaluation.questions.length}",
-              ),
-            ],
-          ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
           Padding(
-            padding: const .symmetric(horizontal: 16),
-            child: LinearProgressIndicator(value: currentQuestion.toDouble()),
+            padding: EdgeInsetsGeometry.all(10),
+            child: ElevatedButton(
+              onPressed: exitEvaluation,
+              child: Icon(Icons.exit_to_app),
+            ),
           ),
         ],
       ),
+      body: Column(
+        children: [
+          Text(
+            "Frage ${currentQuestion} von ${widget.evaluation.questions.length}",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          Padding(
+            padding: EdgeInsetsGeometry.all(20),
+            child: LinearProgressIndicator(
+              value: currentQuestion.toDouble(),
+              minHeight: 15,
+              borderRadius: BorderRadiusGeometry.circular(20),
+            ),
+          ),
+          SizedBox(height: 20),
+          Text(
+            widget.evaluation.questions[currentQuestion],
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsetsGeometry.all(20),
+            child: Row(children: [
+              Text("🤯", style: TextStyle(fontSize: 60)),
+              Text("😕", style: TextStyle(fontSize: 60)),
+              Text("🫤", style: TextStyle(fontSize: 60)),
+              Text("😊", style: TextStyle(fontSize: 60)),
+              Text("🤩", style: TextStyle(fontSize: 60))
+            ]
+            ),
+          ),
+        ],
+      ),
+      persistentFooterButtons: [
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {});
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                ),
+                child: Text("Weiter"),
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {});
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                ),
+                child: Text("Weiter"),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

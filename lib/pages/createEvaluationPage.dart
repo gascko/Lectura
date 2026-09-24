@@ -223,6 +223,7 @@ class QuestionSelectionStepState extends State<QuestionSelectionStep> {
 
   void addRandomQuestions(List<String> questions, int length) {
     final random = Random();
+    widget.newEvaluation.questions.clear();
     for (int i = 0; i < numberOfQuestions; i++) {
       widget.newEvaluation.questions.add(questions[random.nextInt(length)]);
     }
