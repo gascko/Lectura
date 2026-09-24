@@ -18,7 +18,10 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
 
   late var steps = [
     (title: 'Thema', page: TopicStep(newEvaluation: newEvaluation)),
-    (title: 'Fragen', page: QuestionSelectionStep(newEvaluation: newEvaluation)),
+    (
+      title: 'Fragen',
+      page: QuestionSelectionStep(newEvaluation: newEvaluation),
+    ),
   ];
 
   @override
@@ -121,6 +124,7 @@ class CreationStepper extends StatelessWidget {
 
 class TopicStep extends StatefulWidget {
   final Evaluation newEvaluation;
+
   const TopicStep({super.key, required this.newEvaluation});
 
   @override
@@ -152,29 +156,31 @@ class TopicStepState extends State<TopicStep> {
         if (!snapshot.hasData) {
           return const CircularProgressIndicator();
         }
-        return Wrap(
-          spacing: 20.0,
-          runSpacing: 20,
-          children: List<Widget>.generate(snapshot.data!.length, (int index) {
-            return ChoiceChip(
-              label: Text(snapshot.data![index]),
-              selectedColor: Theme.of(context).colorScheme.primary,
-              showCheckmark: false,
-              padding: EdgeInsets.all(15),
-              selected: selectedTopic == snapshot.data![index],
-              labelStyle: TextStyle(
-                color: selectedTopic == snapshot.data![index]
-                    ? Theme.of(context).colorScheme.onPrimary
-                    : Theme.of(context).colorScheme.primary,
-              ),
-              onSelected: (bool selected) {
-                setState(() {
-                  selectedTopic = snapshot.data![index];
-                  widget.newEvaluation.topic = selectedTopic;
-                });
-              },
-            );
-          }).toList(),
+        return SingleChildScrollView(
+          child: Wrap(
+            spacing: 20.0,
+            runSpacing: 20,
+            children: List<Widget>.generate(snapshot.data!.length, (int index) {
+              return ChoiceChip(
+                label: Text(snapshot.data![index]),
+                selectedColor: Theme.of(context).colorScheme.primary,
+                showCheckmark: false,
+                padding: EdgeInsets.all(15),
+                selected: selectedTopic == snapshot.data![index],
+                labelStyle: TextStyle(
+                  color: selectedTopic == snapshot.data![index]
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.primary,
+                ),
+                onSelected: (bool selected) {
+                  setState(() {
+                    selectedTopic = snapshot.data![index];
+                    widget.newEvaluation.topic = selectedTopic;
+                  });
+                },
+              );
+            }).toList(),
+          ),
         );
       },
     );
@@ -183,6 +189,7 @@ class TopicStepState extends State<TopicStep> {
 
 class QuestionSelectionStep extends StatefulWidget {
   final Evaluation newEvaluation;
+
   const QuestionSelectionStep({super.key, required this.newEvaluation});
 
   @override
@@ -197,11 +204,11 @@ class QuestionSelectionStepState extends State<QuestionSelectionStep> {
   void initState() {
     super.initState();
 
-    questionsFuture = questionNotifier.loadQuestions(widget.newEvaluation.topic).then((
-      questions,
-    ) {
-      return questions;
-    });
+    questionsFuture = questionNotifier
+        .loadQuestions(widget.newEvaluation.topic)
+        .then((questions) {
+          return questions;
+        });
   }
 
   @override
@@ -221,64 +228,93 @@ class QuestionSelectionStepState extends State<QuestionSelectionStep> {
                   randomQuestions = value!;
                 });
               },
-              child: const Column(
+              child: Column(
                 children: <Widget>[
                   RadioListTile<bool>(
-                    title: Text('Zufällige Fragen aus dem Pool'),
+                    title: Text('Zufällige', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold, fontSize: 18)),
+                    subtitle: Text('Die App wählt zufällige Fragen aus dem Fragenpool aus.'),
                     value: true,
                   ),
                   RadioListTile<bool>(
-                    title: Text("Fragen auswählen"),
+                    title: Text("Manuell", style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold, fontSize: 18)),
+                    subtitle: Text('Fragen selbst auswählen.'),
                     value: false,
                   ),
                 ],
               ),
             ),
             if (!randomQuestions)
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                "${widget.newEvaluation.questions.length}/${numberOfQuestions} ausgewählt",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "${widget.newEvaluation.questions.length}/${numberOfQuestions} ausgewählt",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ),
-            ),
             if (!randomQuestions)
               Expanded(
-              child: ListView.separated(
-                scrollDirection: Axis.vertical,
-                itemCount: snapshot.data!.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 4),
-                itemBuilder: (context, index) {
-                  return ChoiceChip(
-                    label: Text(snapshot.data![index]),
-                    selected: widget.newEvaluation.questions.contains(
-                      snapshot.data![index],
-                    ),
-                    onSelected: (bool selected) {
-                      setState(() {
-                        if (widget.newEvaluation.questions.contains(
+                child: ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 4),
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: CheckboxListTile(
+                        title: Text(snapshot.data![index], softWrap: true),
+                        value: widget.newEvaluation.questions.contains(
                           snapshot.data![index],
-                        )) {
-                          widget.newEvaluation.questions.remove(snapshot.data![index]);
-                        } else {
-                          if (widget.newEvaluation.questions.length <
-                              numberOfQuestions) {
-                            widget.newEvaluation.questions.add(snapshot.data![index]);
-                          }
-                        }
-                      });
-                    },
-                  );
-                },
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            if (widget.newEvaluation.questions.contains(
+                              snapshot.data![index],
+                            )) {
+                              widget.newEvaluation.questions.remove(
+                                snapshot.data![index],
+                              );
+                            } else {
+                              if (widget.newEvaluation.questions.length <
+                                  numberOfQuestions) {
+                                widget.newEvaluation.questions.add(
+                                  snapshot.data![index],
+                                );
+                              }
+                            }
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
           ],
         );
       },
     );
   }
 }
+
+/*
+
+ {
+                          setState(() {
+                            if (widget.newEvaluation.questions.contains(
+                              snapshot.data![index],
+                            )) {
+                              widget.newEvaluation.questions.remove(
+                                snapshot.data![index],
+                              );
+                            } else {
+                              if (widget.newEvaluation.questions.length <
+                                  numberOfQuestions) {
+                                widget.newEvaluation.questions.add(
+                                  snapshot.data![index],
+                                );
+                              }
+                            }
+                          }
+ */
