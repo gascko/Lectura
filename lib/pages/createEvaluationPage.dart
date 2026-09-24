@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:horizontal_stepper_flutter/horizontal_stepper_flutter.dart';
 import 'package:lectura/objects.dart';
 import '../variables.dart';
+import 'evaluationPage.dart';
 
 class CreateEvaluationPage extends StatefulWidget {
   const CreateEvaluationPage({super.key});
@@ -56,6 +59,13 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
               child: ElevatedButton(
                 onPressed: () {
                   setState(() {
+                    if (currentStep == steps.length - 1) {
+                      Navigator.push(context,
+                        MaterialPageRoute(
+                          builder: (context) => EvaluationPage(evaluation: newEvaluation),
+                        ),
+                      );
+                    }
                     if (currentStep < steps.length - 1) {
                       currentStep += 1;
                     }
@@ -211,6 +221,13 @@ class QuestionSelectionStepState extends State<QuestionSelectionStep> {
         });
   }
 
+  void addRandomQuestions(List<String> questions, int length) {
+    final random = Random();
+    for (int i = 0; i < numberOfQuestions; i++) {
+      widget.newEvaluation.questions.add(questions[random.nextInt(length)]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<String>>(
@@ -226,6 +243,7 @@ class QuestionSelectionStepState extends State<QuestionSelectionStep> {
               onChanged: (bool? value) {
                 setState(() {
                   randomQuestions = value!;
+                  addRandomQuestions(snapshot.data!, snapshot.data!.length);
                 });
               },
               child: Column(
