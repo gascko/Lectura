@@ -217,6 +217,7 @@ class QuestionSelectionStepState extends State<QuestionSelectionStep> {
     questionsFuture = questionNotifier
         .loadQuestions(widget.newEvaluation.topic)
         .then((questions) {
+          addRandomQuestions(questions, questions.length);
           return questions;
         });
   }
@@ -244,7 +245,12 @@ class QuestionSelectionStepState extends State<QuestionSelectionStep> {
               onChanged: (bool? value) {
                 setState(() {
                   randomQuestions = value!;
-                  addRandomQuestions(snapshot.data!, snapshot.data!.length);
+                  if (randomQuestions) {
+                    addRandomQuestions(snapshot.data!, snapshot.data!.length);
+                  }
+                  else {
+                    widget.newEvaluation.questions.clear();
+                  }
                 });
               },
               child: Column(

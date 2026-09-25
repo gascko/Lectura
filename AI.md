@@ -154,3 +154,127 @@ Soll ich zu einem dieser Punkte einen konkreten Code-Patch vorschlagen, oder bra
 
 Hinweis zu meiner Suche: Die Web-Suche lieferte keine verwertbaren Treffer, meine Aussagen zu Element.updateChild/identischen Widget-Instanzen basieren auf dem
 Standard-Flutter-Rendering-Verhalten.
+
+---
+Datum: 25.09.2026
+---
+
+# Frage:
+
+Wie kann ich in Flutter die zurück taste bzw. die zurück wisch geste umleiten auf eine eigene funktion die erstmal eine Warnung als Pop-Up Window anzeigt oder so bevor man die Seite verlässt?
+
+# Antwort:
+
+Ja. In aktuellem Flutter ist dafür PopScope gedacht. Damit kannst du die Zurück-Navigation zunächst blockieren, dein eigenes Dialogfenster anzeigen und erst nach Bestätigung Navigator.pop() ausführen. PopScope behandelt insbesondere die Android-System-Zurück-Geste bzw. Zurück-Taste.
+
+Beispiel: Warnung vor dem Verlassen
+class EditPage extends StatelessWidget {
+const EditPage({super.key});
+
+Future<bool> _confirmLeave(BuildContext context) async {
+final result = await showDialog<bool>(
+context: context,
+builder: (context) => AlertDialog(
+title: const Text('Seite verlassen?'),
+content: const Text(
+'Deine Änderungen wurden noch nicht gespeichert. '
+'Möchtest du die Seite wirklich verlassen?',
+),
+actions: [
+TextButton(
+onPressed: () => Navigator.pop(context, false),
+child: const Text('Abbrechen'),
+),
+FilledButton(
+onPressed: () => Navigator.pop(context, true),
+child: const Text('Verlassen'),
+),
+],
+),
+);
+
+    return result ?? false;
+}
+
+@override
+Widget build(BuildContext context) {
+return PopScope(
+// Zurück zunächst blockieren
+canPop: false,
+
+      onPopInvokedWithResult: (didPop, result) async {
+        // Falls die Seite bereits geschlossen wurde, nichts machen
+        if (didPop) return;
+
+        final shouldLeave = await _confirmLeave(context);
+
+        if (shouldLeave && context.mounted) {
+          Navigator.of(context).pop();
+        }
+      },
+
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Bearbeiten'),
+        ),
+        body: const Center(
+          child: Text('Meine Seite'),
+        ),
+      ),
+    );
+}
+}
+
+Was passiert hier?
+
+Wenn der Benutzer
+
+die Android-Zurück-Taste drückt,
+die Android-Zurück-Geste verwendet,
+oder anderweitig versucht, die Route zu schließen,
+
+verhindert
+
+canPop: false,
+
+
+zunächst das Verlassen der Seite. Flutter ruft anschließend onPopInvokedWithResult mit didPop == false auf.
+
+Dann kannst du deine eigene Funktion ausführen:
+
+final shouldLeave = await _confirmLeave(context);
+
+
+Nur wenn der Nutzer bestätigt:
+
+if (shouldLeave && context.mounted) {
+Navigator.of(context).pop();
+}
+
+
+wird die Seite tatsächlich geschlossen.
+
+Noch praktischer bei ungespeicherten Änderungen
+
+Du kannst canPop auch abhängig von deinem State setzen:
+
+PopScope(
+canPop: !hasUnsavedChanges,
+onPopInvokedWithResult: (didPop, result) async {
+if (didPop) return;
+
+    final leave = await _confirmLeave(context);
+
+    if (leave && context.mounted) {
+      Navigator.pop(context);
+    }
+},
+child: ...
+)
+
+
+Damit kommt die Warnung nur dann, wenn tatsächlich ungespeicherte Änderungen vorhanden sind.
+
+Wichtig bei iOS: Die Cupertino-Swipe-Back-Geste verhält sich etwas anders. Wenn canPop: false zusammen mit CupertinoRouteTransitionMixin verwendet wird, wird laut Flutter-Dokumentation die Geste gar nicht erkannt und der Callback entsprechend nicht ausgelöst.
+
+Falls du mir deinen aktuellen Scaffold/Page-Code schickst, kann ich dir PopScope direkt an der richtigen Stelle einbauen.
