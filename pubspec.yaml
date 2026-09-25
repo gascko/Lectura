@@ -38,6 +38,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   horizontal_stepper_flutter: ^1.0.3
   flutter_soloud: ^5.1.2
+  uuid: ^4.6.0
 
 dev_dependencies:
   flutter_test:

@@ -453,7 +453,7 @@
         <mxCell id="QXBwybyRAq3H4M4WpqyT-5" value="Evaluation auswählen" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="40" y="10" width="140" height="180" as="geometry" />
         </mxCell>
-        <mxCell id="QXBwybyRAq3H4M4WpqyT-7" value="Vorhandene Evaluationen anzeigen aus SP" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="QXBwybyRAq3H4M4WpqyT-5" vertex="1">
+        <mxCell id="QXBwybyRAq3H4M4WpqyT-7" value="Vorhandene Evaluationen anzeigen aus JSON Datei" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="QXBwybyRAq3H4M4WpqyT-5" vertex="1">
           <mxGeometry y="30" width="140" height="50" as="geometry" />
         </mxCell>
         <mxCell id="QXBwybyRAq3H4M4WpqyT-8" value="Vorhandene Evaluationen durchsuchen" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="QXBwybyRAq3H4M4WpqyT-5" vertex="1">
@@ -484,34 +484,31 @@
           <mxGeometry y="290" width="140" height="50" as="geometry" />
         </mxCell>
         <mxCell id="QXBwybyRAq3H4M4WpqyT-14" value="App anpassen" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-          <mxGeometry x="840" y="10" width="140" height="60" as="geometry" />
+          <mxGeometry x="840" y="10" width="140" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="QXBwybyRAq3H4M4WpqyT-15" value="Dark-/ Lightmodus setzen" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="QXBwybyRAq3H4M4WpqyT-14" vertex="1">
-          <mxGeometry y="30" width="140" height="30" as="geometry" />
+        <mxCell id="QXBwybyRAq3H4M4WpqyT-15" value="Dark-/ Lightmodus setzen und speichern in SP" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="QXBwybyRAq3H4M4WpqyT-14" vertex="1">
+          <mxGeometry y="30" width="140" height="60" as="geometry" />
         </mxCell>
         <mxCell id="1IGS40azmeQgwha98Cv0-1" value="Evaluation erstellen" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="200" y="10" width="140" height="330" as="geometry" />
+          <mxGeometry x="200" y="10" width="140" height="290" as="geometry" />
         </mxCell>
         <mxCell id="1IGS40azmeQgwha98Cv0-2" value="Name für Evaluation festlegen" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1IGS40azmeQgwha98Cv0-1">
           <mxGeometry y="30" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="BLIh27oAW9nJZMtBXtvI-1" value="Fragenpool aus SP laden" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1IGS40azmeQgwha98Cv0-1">
+        <mxCell id="BLIh27oAW9nJZMtBXtvI-1" value="Fragenpool aus JSON Datei laden" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1IGS40azmeQgwha98Cv0-1">
           <mxGeometry y="70" width="140" height="40" as="geometry" />
         </mxCell>
         <mxCell id="1IGS40azmeQgwha98Cv0-4" value="Aus Fragenpool 3 Fragen auswählen" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1IGS40azmeQgwha98Cv0-1">
           <mxGeometry y="110" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="1IGS40azmeQgwha98Cv0-3" value="Evaluation in SP speichern" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1IGS40azmeQgwha98Cv0-1">
+        <mxCell id="bW-QD2VBbwrJoeLQxESn-1" value="Evaluation starten" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1IGS40azmeQgwha98Cv0-1">
           <mxGeometry y="150" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="bW-QD2VBbwrJoeLQxESn-1" value="Evaluation starten oder nur speichern in SP" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1IGS40azmeQgwha98Cv0-1">
-          <mxGeometry y="190" width="140" height="40" as="geometry" />
-        </mxCell>
         <mxCell id="1IGS40azmeQgwha98Cv0-5" value="Evaluation in Cloud speichern" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1IGS40azmeQgwha98Cv0-1">
-          <mxGeometry y="230" width="140" height="50" as="geometry" />
+          <mxGeometry y="190" width="140" height="50" as="geometry" />
         </mxCell>
         <mxCell id="BLIh27oAW9nJZMtBXtvI-2" value="Fragenpool aus Cloud laden" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1IGS40azmeQgwha98Cv0-1">
-          <mxGeometry y="280" width="140" height="50" as="geometry" />
+          <mxGeometry y="240" width="140" height="50" as="geometry" />
         </mxCell>
         <mxCell id="pMjti-WEyOlMq1s3t1xp-1" value="Auswertungen nachvefolgen" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
           <mxGeometry x="680" y="10" width="140" height="180" as="geometry" />

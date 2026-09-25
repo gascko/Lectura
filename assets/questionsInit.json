@@ -1,0 +1,66 @@
+[
+  {
+    "id": "55d6ab78-e1d5-48e2-95dd-edbc4911b85e",
+    "text": "Hat der Professor deutlich gesprochen?"
+  },
+  {
+    "id": "daa4792e-8703-45a0-b30c-fee0f2b28b1c",
+    "text": "Waren die Erklärungen leicht verständlich?"
+  },
+  {
+    "id": "5bcd12ec-6ed4-4ecc-aac2-5d46664c0a59",
+    "text": "Wurden komplexe Themen nachvollziehbar vermittelt?"
+  },
+  {
+    "id": "eceaa207-313b-43d2-a12c-3ebae8291c99",
+    "text": "Konnte den Ausführungen während der Vorlesung gut gefolgt werden?"
+  },
+  {
+    "id": "06808442-6685-4c97-8ea9-16b570ccfe9d",
+    "text": "Wie war die Vortragsweise?"
+  },
+  {
+    "id": "a105d295-1f7c-4b6f-b070-57b7e5755dc0",
+    "text": "War der Vortrag interessant und motivierend gestaltet?"
+  },
+  {
+    "id": "f66d096e-a798-4d8f-8d64-a8035389de60",
+    "text": "Wurde die Vorlesungszeit sinnvoll genutzt?"
+  },
+  {
+    "id": "b4b945f7-2a62-4b3b-86fa-fbfb5622973c",
+    "text": "Ging der Professor angemessen auf Fragen ein?"
+  },
+  {
+    "id": "90e1ca65-b72e-4f26-87fd-00691ac3f4df",
+    "text": "Waren die Folien übersichtlich gestaltet?"
+  },
+  {
+    "id": "fa298d14-2c05-4179-b7bd-d9c4bb4a4720",
+    "text": "Unterstützten die Präsentationsunterlagen das Verständnis der Inhalte?"
+  },
+  {
+    "id": "dab00fe9-b9a2-4a56-b2a7-720346434e18",
+    "text": "Waren Schriftgröße und Lesbarkeit der Folien angemessen?"
+  },
+  {
+    "id": "c27262de-e75f-43cb-a4ea-970478f16c69",
+    "text": "Wurden Grafiken und Beispiele sinnvoll eingesetzt?"
+  },
+  {
+    "id": "7ffa21cc-1953-4cd3-bafb-23cc80b12b93",
+    "text": "Die mitgegebenen Begleitmaterialien waren hilfreich"
+  },
+  {
+    "id": "be4f5e52-9cd6-4db6-b734-6511d2bfa614",
+    "text": "Waren die bereitgestellten Materialien vollständig?"
+  },
+  {
+    "id": "faa83124-ba15-4f6f-baac-fc569cc4460e",
+    "text": "Waren die Lernmaterialien gut strukturiert?"
+  },
+  {
+    "id": "1b37bcdd-28ca-45a4-843c-8a84a2609ebf",
+    "text": "Haben die Materialien die Prüfungsvorbereitung unterstützt?"
+  }
+]

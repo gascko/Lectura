@@ -1,52 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
-
-class QuestionNotifier with ChangeNotifier {
-  List<String> questions = List.empty();
-  List <String> get question => questions;
-
-  Future<List<String>> loadQuestions(String topic) async {
-    final storage = await SharedPreferences.getInstance();
-    List<String> storageTopics = storage.getStringList(topic) ?? List.empty();
-    questions = storageTopics;
-    notifyListeners();
-    return questions;
-  }
-}
-
-void initStorage() async {
-  final storage = await SharedPreferences.getInstance();
-  final isFirstStart = storage.getBool('isFirstStart') ?? true;
-
-  if (isFirstStart) {
-    String jsonString = await rootBundle.loadString('assets/Init.json');
-    final Map<String, dynamic> data = jsonDecode(jsonString);
-
-    await storage.setStringList('topics', data.keys.toList());
-
-    for (var entry in data.entries) {
-      List<String> questions = List<String>.from(entry.value);
-      storage.setStringList(entry.key, questions);
-    }
-
-    //await storage.setBool("isFirstStart", false);
-  }
-}
-
-class TopicsNotifier with ChangeNotifier {
-  List<String> topics = List.empty();
-  List<String> get topic => topics;
-
-  Future<List<String>> loadTopics() async {
-    final storage = await SharedPreferences.getInstance();
-    List<String> storageTopics = storage.getStringList('topics') ?? List.empty();
-    topics = storageTopics;
-    notifyListeners();
-    return topics;
-  }
-}
 
 class ColorThemeNotifier with ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;

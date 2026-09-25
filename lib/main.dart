@@ -11,15 +11,15 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme:
-      ColorScheme.fromSeed(
-        seedColor: seed,
-        brightness: Brightness.light,
-      ).copyWith(
-        primary: seed,
-        onPrimary: Colors.white,
-        onTertiary: Color(0xFF2E7D32),
-        onTertiaryContainer: Color(0xFFBDF4C0),
-      ),
+          ColorScheme.fromSeed(
+            seedColor: seed,
+            brightness: Brightness.light,
+          ).copyWith(
+            primary: seed,
+            onPrimary: Colors.white,
+            onTertiary: Color(0xFF2E7D32),
+            onTertiaryContainer: Color(0xFFBDF4C0),
+          ),
     );
   }
 
@@ -37,14 +37,13 @@ class AppTheme {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await themeNotifier.loadMode();
-  initStorage();
   runApp(
-      MaterialApp(
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
-        themeMode: themeNotifier.mode,
-        home: LecturaApp(),
-      )
+    MaterialApp(
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: themeNotifier.mode,
+      home: LecturaApp(),
+    ),
   );
 }
 
@@ -59,8 +58,24 @@ class LecturaAppState extends State<LecturaApp> {
   LecturaAppState();
 
   List<Map<String, dynamic>> items = [
-    {'title': 'Ergebnisse', 'page': SettingsPage(), 'icon': Icons.bar_chart},
-    {'title': 'Einstellungen', 'page': SettingsPage(), 'icon': Icons.settings},
+    {
+      'title': 'Auswertung',
+      'subtitle': 'Alle Evaluationen ansehen und analysieren',
+      'page': SettingsPage(),
+      'icon': Icons.bar_chart,
+    },
+    {
+      'title': 'Neue Evaluation erstellen',
+      'subtitle': 'Neue Evaluation für eine Vorlesung anlegen und speichern',
+      'page': SettingsPage(),
+      'icon': Icons.upload_file_outlined
+    },
+    {
+      'title': 'Einstellungen',
+      'subtitle': 'Lectura konfigurieren',
+      'page': SettingsPage(),
+      'icon': Icons.settings
+    },
   ];
 
   @override
@@ -81,10 +96,7 @@ class LecturaAppState extends State<LecturaApp> {
           children: [
             FilledButton(
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(MediaQuery
-                    .of(context)
-                    .size
-                    .width, 60),
+                minimumSize: Size(MediaQuery.of(context).size.width, 60),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -102,21 +114,13 @@ class LecturaAppState extends State<LecturaApp> {
                 children: [
                   Icon(Icons.add, size: 30),
                   SizedBox(width: 10),
-                  Text("Neue Evaluation starten",
-                      style: TextStyle(fontSize: 18)),
+                  Text(
+                    "Neue Evaluation starten",
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 30),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Letzte Evaluation",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: 20),
-            CourseCard(),
             SizedBox(height: 10),
             Align(
               alignment: Alignment.centerLeft,
@@ -132,7 +136,8 @@ class LecturaAppState extends State<LecturaApp> {
                 itemBuilder: (context, index) {
                   return ListCard(
                     icon: items[index]['icon'],
-                    text: items[index]['title'],
+                    title: items[index]['title'],
+                    subtitle: items[index]['subtitle'],
                     page: items[index]['page'],
                   );
                 },
@@ -147,13 +152,15 @@ class LecturaAppState extends State<LecturaApp> {
 
 class ListCard extends StatelessWidget {
   final IconData icon;
-  final String text;
+  final String title;
+  final String subtitle;
   final Widget page;
 
   const ListCard({
     super.key,
     required this.icon,
-    required this.text,
+    required this.title,
+    required this.subtitle,
     required this.page,
   });
 
@@ -161,31 +168,23 @@ class ListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 1,
-      color: Theme
-          .of(context)
-          .colorScheme
-          .surfaceBright,
+      color: Theme.of(context).colorScheme.surfaceBright,
       child: ListTile(
         leading: Container(
           width: 42,
           height: 50,
           decoration: BoxDecoration(
-            color: Theme
-                .of(context)
-                .colorScheme
-                .surfaceContainer,
+            color: Theme.of(context).colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
             icon,
-            color: Theme
-                .of(context)
-                .colorScheme
-                .primary,
+            color: Theme.of(context).colorScheme.primary,
             size: 22,
           ),
         ),
-        title: Text(text),
+        title: Text(title),
+        subtitle: Text(subtitle, style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         trailing: Icon(Icons.arrow_forward_ios),
         onTap: () {
           Navigator.push(
@@ -193,116 +192,6 @@ class ListCard extends StatelessWidget {
             MaterialPageRoute(builder: (context) => page),
           );
         },
-      ),
-    );
-  }
-}
-
-class CourseCard extends StatelessWidget {
-  const CourseCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Theme
-          .of(context)
-          .colorScheme
-          .surfaceBright,
-      elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SettingsPage()),
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .surfaceContainer,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  Icons.bar_chart,
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .primary,
-                  size: 22,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Software Engineering',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-
-                    const SizedBox(height: 4),
-
-                    Row(
-                      children: [
-                        Icon(Icons.calendar_today_outlined, size: 14),
-                        const SizedBox(width: 4),
-                        Text('03.06.2024', style: TextStyle(fontSize: 12)),
-
-                        const SizedBox(width: 10),
-
-                        Icon(Icons.people_outline, size: 14),
-                        const SizedBox(width: 4),
-                        Text('27 Antworten', style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme
-                            .of(
-                          context,
-                        )
-                            .colorScheme
-                            .onTertiaryContainer,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Text(
-                        'Abgeschlossen',
-                        style: TextStyle(
-                          color: Theme
-                              .of(context)
-                              .colorScheme
-                              .onTertiary,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(Icons.arrow_forward_ios),
-            ],
-          ),
-        ),
       ),
     );
   }

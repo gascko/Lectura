@@ -89,14 +89,14 @@ class evaluationPageState extends State<EvaluationPage> {
       body: Column(
         children: [
           Text(
-            "Frage ${currentQuestion} von ${widget.evaluation.questions.length}",
+            "Frage ${currentQuestion} von ${widget.evaluation.questionIds.length}",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
           Padding(
             padding: EdgeInsetsGeometry.all(20),
             child: LinearProgressIndicator(
-              value: currentQuestion * (1 / widget.evaluation.questions.length),
+              value: currentQuestion * (1 / widget.evaluation.questionIds.length),
               minHeight: 15,
               borderRadius: BorderRadiusGeometry.circular(20),
             ),
