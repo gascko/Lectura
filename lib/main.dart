@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lectura/pages/createEvaluationPage.dart';
-import 'package:lectura/storage.dart';
 import 'variables.dart';
 import 'pages/settingsPage.dart';
+import 'pages/selectEvaluationPage.dart';
 
 class AppTheme {
   static const Color seed = Color(0xFF5850DF);
@@ -67,7 +67,7 @@ class LecturaAppState extends State<LecturaApp> {
     {
       'title': 'Neue Evaluation erstellen',
       'subtitle': 'Neue Evaluation für eine Vorlesung anlegen und speichern',
-      'page': SettingsPage(),
+      'page': CreateEvaluationPage(),
       'icon': Icons.upload_file_outlined
     },
     {
@@ -103,10 +103,9 @@ class LecturaAppState extends State<LecturaApp> {
               ),
 
               onPressed: () {
-                Navigator.push(context,
-                  MaterialPageRoute(
-                    builder: (context) => const CreateEvaluationPage(),
-                  ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SelectEvaluationPage()),
                 );
               },
               child: Row(

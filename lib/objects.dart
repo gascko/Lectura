@@ -7,10 +7,10 @@ class Evaluation {
   Evaluation(this.id, this.name, this.creationDate, this.questionIds);
 
   Evaluation.fromJson(Map<String, dynamic> json)
-  : id = json['id'] as String,
-  name = json['name'] as String,
-  creationDate = json['creationDate'] as DateTime,
-  questionIds = json['questionIds'] as List<String>;
+    : id = json['id'] as String,
+      name = json['name'] as String,
+      creationDate = DateTime.parse(json['creationDate'] as String),
+      questionIds = List<String>.from(json['questionIds']);
 }
 
 class EvaluationResult {
@@ -24,7 +24,7 @@ class EvaluationResult {
     : evaluationId = json['askedQuestionId'] as String,
       dateOfEvaluation = json['dateOfEvaluation'] as DateTime,
       results = json['results']
-          .map((item) => Question.fromJson(item as Map<String, dynamic>))
+          .map((item) => Result.fromJson(item as Map<String, dynamic>))
           .toList();
 }
 

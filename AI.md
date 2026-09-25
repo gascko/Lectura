@@ -475,3 +475,119 @@ if (!mounted) return;
 schützt dich davor, setState() aufzurufen, wenn der Benutzer die Seite inzwischen verlassen hat.
 
 Konkret für deinen bestehenden Aufbau würde ich daher isLoading + setState() einsetzen. Wenn getQuestions() ausschließlich für diesen einen Bereich benötigt wird, ist dagegen FutureBuilder die elegantere Lösung.
+
+# Frage
+
+Ich möchte in Flutter einen JSON Array aus Strings parsen. Dafür habe ich in der Klasse eine Methode erstellt toJson welche den geladenen JSON String bekommt als Parameter und daraus die einzelnen Member der Klasse zieht. Die Klasse sieht so aus:
+
+class Evaluation {
+final String id;
+final String name;
+final DateTime creationDate;
+final List<String> questionIds;
+
+Evaluation(this.id, this.name, this.creationDate, this.questionIds);
+
+Evaluation.fromJson(Map<String, dynamic> json)
+: id = json['id'] as String,
+name = json['name'] as String,
+creationDate = DateTime.parse(json['creationDate'] as String),
+questionIds = json['questionIds'] as List<String>;
+}​‌
+
+Leider funktioniert die Letzte Zeile nicht, bei der ich versuche aus einen Array von Strings jeweils die einzelnen Strings in dem Member questionIds zu speichern. Wie kann ich das lösen?
+
+# Antwort
+
+Das Problem liegt am Typ, den Dart beim JSON-Decoding erzeugt: Ein JSON-Array wird zunächst als List<dynamic> interpretiert und kann deshalb nicht direkt mit as List<String> gecastet werden. Die Dart-Dokumentation beschreibt genau dieses Verhalten.
+
+Einfachste Lösung
+
+Ändere nur deine letzte Zeile zu:
+
+questionIds = List<String>.from(json['questionIds']);
+
+
+Deine Klasse sieht dann so aus:
+
+class Evaluation {
+final String id;
+final String name;
+final DateTime creationDate;
+final List<String> questionIds;
+
+Evaluation(
+this.id,
+this.name,
+this.creationDate,
+this.questionIds,
+);
+
+Evaluation.fromJson(Map<String, dynamic> json)
+: id = json['id'] as String,
+name = json['name'] as String,
+creationDate = DateTime.parse(json['creationDate'] as String),
+questionIds = List<String>.from(json['questionIds']);
+}
+
+
+List<String>.from(...) erzeugt eine neue List<String> aus dem übergebenen Iterable und erwartet dabei, dass die enthaltenen Elemente tatsächlich String sind.
+
+Warum funktioniert as List<String> nicht?
+
+Angenommen, dein JSON sieht so aus:
+
+{
+"id": "123",
+"name": "Evaluation 1",
+"creationDate": "2026-09-25T12:00:00Z",
+"questionIds": [
+"question-1",
+"question-2",
+"question-3"
+]
+}
+
+
+Nach:
+
+final json = jsonDecode(jsonString);
+
+
+sieht Dart die Typen vereinfacht so:
+
+Map<String, dynamic>
+
+json['questionIds']
+↓
+List<dynamic>
+
+
+Die komplette Liste kann nicht einfach so:
+
+json['questionIds'] as List<String>
+
+
+in eine List<String> umgecastet werden.
+
+Mit:
+
+List<String>.from(json['questionIds'])
+
+
+werden dagegen die Elemente der Liste als String übernommen.
+
+Alternativ funktioniert auch:
+
+questionIds = (json['questionIds'] as List)
+.map((item) => item as String)
+.toList();
+
+
+Für deinen Fall würde ich aber eindeutig die kürzere Variante verwenden:
+
+questionIds = List<String>.from(json['questionIds']);
+
+
+Das passt auch gut zu deinem vorherigen Code, weil widget.evaluation.questionIds[currentQuestion - 1] danach tatsächlich sauber einen String zurückliefert.
+
