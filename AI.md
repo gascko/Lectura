@@ -278,3 +278,200 @@ Damit kommt die Warnung nur dann, wenn tatsächlich ungespeicherte Änderungen v
 Wichtig bei iOS: Die Cupertino-Swipe-Back-Geste verhält sich etwas anders. Wenn canPop: false zusammen mit CupertinoRouteTransitionMixin verwendet wird, wird laut Flutter-Dokumentation die Geste gar nicht erkannt und der Callback entsprechend nicht ausgelöst.
 
 Falls du mir deinen aktuellen Scaffold/Page-Code schickst, kann ich dir PopScope direkt an der richtigen Stelle einbauen.
+
+# Frage
+
+Wie kann ich in Flutter auf async Abfragen warten? Konkret möchte ich in diesem Text Widget:Text(
+questions.where(
+(question) =>
+question.id ==
+widget.evaluation.questionIds[currentQuestion - 1],
+).first.text,Einen geladenen Text anzeigen. Die Liste mit den Texten wird aber zu beginn der Seite erst asynchron geladen:List<Question> questions = [];
+
+@override
+void initState() {
+super.initState();
+
+getQuestions().then((questionsFuture) {
+if (questionsFuture.isNotEmpty) {
+questions = questionsFuture;
+}
+});
+}Wie kann ich das umsetzen, dass entweder ein circular Warte screen angezeigt wird und der Text geladen wird?
+
+# Antwort:
+Ja. In deinem Fall gibt es zwei saubere Lösungen. Ich würde FutureBuilder verwenden, weil Flutter damit Ladezustand, Fehler und fertige Daten direkt abbilden kann. Wichtig ist außerdem: In deinem aktuellen Code fehlt setState(), weshalb Flutter nach dem Laden der questions nicht automatisch neu zeichnet.
+
+Flutter empfiehlt, das Future bereits vorher, zum Beispiel in initState(), zu erzeugen und nicht direkt inbuild(), da es sonst bei Rebuilds erneut gestartet werden kann.
+
+Variante 1: FutureBuilder ⭐ empfohlen
+
+Speichere zunächst dein Future:
+
+late Future<List<Question>> questionsFuture;
+
+@override
+void initState() {
+super.initState();
+
+questionsFuture = getQuestions();
+}
+
+
+Anschließend kannst du in deinem build():
+
+@override
+Widget build(BuildContext context) {
+return FutureBuilder<List<Question>>(
+future: questionsFuture,
+builder: (context, snapshot) {
+// Daten werden noch geladen
+if (snapshot.connectionState == ConnectionState.waiting) {
+return const Center(
+child: CircularProgressIndicator(),
+);
+}
+
+      // Fehler beim Laden
+      if (snapshot.hasError) {
+        return Center(
+          child: Text('Fehler: ${snapshot.error}'),
+        );
+      }
+
+      // Keine Questions vorhanden
+      if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        return const Center(
+          child: Text('Keine Fragen gefunden'),
+        );
+      }
+
+      // Daten wurden geladen
+      final questions = snapshot.data!;
+
+      final question = questions.firstWhere(
+        (question) =>
+            question.id ==
+            widget.evaluation.questionIds[currentQuestion - 1],
+      );
+
+      return Text(question.text);
+    },
+);
+}
+
+
+Das Verhalten ist dann:
+
+Seite öffnet sich
+↓
+getQuestions()
+↓
+CircularProgressIndicator
+↓
+Daten angekommen
+↓
+Text wird angezeigt
+
+
+Genau dafür ist der FutureBuilder gedacht: Er baut sich abhängig vom aktuellen Zustand eines Future auf.
+
+Variante 2: Deinen vorhandenen Code mit setState() korrigieren
+
+Wenn questions noch an anderen Stellen auf deiner Seite verwendet wird, würde ich möglicherweise sogar diese Variante nehmen.
+
+Momentan hast du:
+
+getQuestions().then((questionsFuture) {
+if (questionsFuture.isNotEmpty) {
+questions = questionsFuture;
+}
+});
+
+
+Das Problem: Du änderst zwar die Variable, aber Flutter weiß nicht, dass es das Widget neu bauen soll.
+
+Mach daraus:
+
+List<Question> questions = [];
+bool isLoading = true;
+
+@override
+void initState() {
+super.initState();
+_loadQuestions();
+}
+
+Future<void> _loadQuestions() async {
+final result = await getQuestions();
+
+if (!mounted) return;
+
+setState(() {
+questions = result;
+isLoading = false;
+});
+}
+
+
+Und dann in build():
+
+@override
+Widget build(BuildContext context) {
+if (isLoading) {
+return const Center(
+child: CircularProgressIndicator(),
+);
+}
+
+if (questions.isEmpty) {
+return const Center(
+child: Text('Keine Fragen gefunden'),
+);
+}
+
+final question = questions.firstWhere(
+(question) =>
+question.id ==
+widget.evaluation.questionIds[currentQuestion - 1],
+);
+
+return Text(question.text);
+}
+
+Wenn du nur den Text ersetzen möchtest
+
+Falls nicht die gesamte Seite während des Ladens verschwinden soll, kannst du die Prüfung auch genau dort machen, wo aktuell dein Text steht:
+
+questions.isEmpty
+    ? const CircularProgressIndicator()
+    : Text(
+        questions.firstWhere(
+          (question) =>
+              question.id ==
+              widget.evaluation.questionIds[currentQuestion - 1],
+        ).text,
+      )
+
+
+Dann bleibt der Rest deiner Seite sichtbar und nur anstelle der Frage erscheint kurz der Spinner.
+
+Für deinen vorhandenen Code würde ich Variante 2 nehmen
+
+Du bist eigentlich schon fast fertig. Der entscheidende Unterschied ist:
+
+setState(() {
+questions = result;
+});
+
+
+setState() sorgt dafür, dass Flutter nach dem asynchronen Laden build() noch einmal ausführt.
+
+Und mounted:
+
+if (!mounted) return;
+
+
+schützt dich davor, setState() aufzurufen, wenn der Benutzer die Seite inzwischen verlassen hat.
+
+Konkret für deinen bestehenden Aufbau würde ich daher isLoading + setState() einsetzen. Wenn getQuestions() ausschließlich für diesen einen Bereich benötigt wird, ist dagegen FutureBuilder die elegantere Lösung.
