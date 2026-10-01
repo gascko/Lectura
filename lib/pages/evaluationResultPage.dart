@@ -43,12 +43,14 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
   }
 
   void calculateAverageRating() {
-    widget.evaluationResult.results.forEach((key, values) {
-      for (var result in values) {
-        averageRating += result;
+    if (totalAnswers > 0) {
+      widget.evaluationResult.results.forEach((key, values) {
+        for (var result in values) {
+          averageRating += result;
+        }
+      });
+      averageRating = averageRating / totalAnswers;
       }
-    });
-    averageRating = averageRating / totalAnswers;
   }
 
   void calculateTotalAnswers() {
@@ -73,9 +75,9 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LecturaApp()),
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const LecturaApp()),
+                  (route) => false,
             );
           },
         ),
@@ -114,7 +116,7 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
                     padding: EdgeInsetsGeometry.directional(bottom: 12),
                     child: Text(
                       DateFormat.yMMMEd().format(
-                        widget.evaluation.creationDate,
+                        widget.evaluationResult.dateOfEvaluation,
                       ),
                       style: TextStyle(
                         fontSize: 14,
@@ -140,6 +142,7 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
                                 fontSize: 18,
                               ),
                             ),
+                            if (totalAnswers > 0)
                             Padding(
                               padding: EdgeInsetsGeometry.all(10),
                               child: Text(
@@ -150,7 +153,8 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
                                 ),
                               ),
                             ),
-                            StarRating(
+                            if (totalAnswers > 0)
+                              StarRating(
                               allowHalfRating: true,
                               rating: averageRating,
                             ),

@@ -62,14 +62,10 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
                       prefixIcon: Icon(Icons.search),
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 15),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          width: 1.5,
-                        ),
+                        borderSide: const BorderSide(width: 1.5),
                       ),
                     ),
                     onChanged: (text) {
@@ -101,8 +97,7 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
                             softWrap: true,
                           ),
                           onTap: () {
-                            Navigator.push(
-                              context,
+                            Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                 builder: (context) => EvaluationPage(
                                   evaluation: Evaluation(
@@ -113,6 +108,7 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
                                   ),
                                 ),
                               ),
+                              (route) => false,
                             );
                           },
                         ),

@@ -46,9 +46,18 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
                   setState(() {
                     if (formularKey.currentState!.validate()) {
                       if (questionIds.length >= numberOfQuestions) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EvaluationPage(evaluation: Evaluation(uuid.v4(), name, DateTime.now(), questionIds),)),
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => EvaluationPage(
+                              evaluation: Evaluation(
+                                uuid.v4(),
+                                name,
+                                DateTime.now(),
+                                questionIds,
+                              ),
+                            ),
+                          ),
+                          (route) => false,
                         );
                       }
                     }
@@ -140,7 +149,9 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: questionIds.length < numberOfQuestions ? Colors.red : Theme.of(context).colorScheme.primary,
+                        color: questionIds.length < numberOfQuestions
+                            ? Colors.red
+                            : Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),
@@ -152,7 +163,9 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
                       itemBuilder: (context, index) {
                         return Card(
                           child: CheckboxListTile(
-                            isError: questionIds.length < numberOfQuestions ? true : false,
+                            isError: questionIds.length < numberOfQuestions
+                                ? true
+                                : false,
                             title: Text(
                               snapshot.data![index].text,
                               softWrap: true,

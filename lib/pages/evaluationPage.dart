@@ -59,9 +59,9 @@ class EvaluationPageState extends State<EvaluationPage> {
               ),
               child: const Text('Beenden ohne Auswertung'),
               onPressed: () {
-                Navigator.push(
-                  context,
+                Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const LecturaApp()),
+                  (route) => false,
                 );
               },
             ),
@@ -76,14 +76,14 @@ class EvaluationPageState extends State<EvaluationPage> {
                   DateTime.now(),
                   results,
                 );
-                Navigator.push(
-                  context,
+                Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => EvaluationResultPage(
                       evaluation: widget.evaluation,
                       evaluationResult: result,
                     ),
                   ),
+                  (route) => false,
                 );
               },
             ),
@@ -191,7 +191,14 @@ class EvaluationPageState extends State<EvaluationPage> {
                               onSelected: (bool selected) {
                                 setState(() {
                                   selectedValue = selected ? index : null;
-                                  results.putIfAbsent(widget.evaluation.questionIds[currentQuestion - 1], () => []).add(selectedValue! + 1);
+                                  results
+                                      .putIfAbsent(
+                                        widget
+                                            .evaluation
+                                            .questionIds[currentQuestion - 1],
+                                        () => [],
+                                      )
+                                      .add(selectedValue! + 1);
                                 });
                                 if (currentQuestion <
                                     widget.evaluation.questionIds.length) {
