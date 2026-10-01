@@ -16,27 +16,15 @@ class Evaluation {
 class EvaluationResult {
   final String evaluationId;
   final DateTime dateOfEvaluation;
-  final List<Result> results;
+  final Map<String, List<int>> results;
 
   EvaluationResult(this.evaluationId, this.dateOfEvaluation, this.results);
 
   EvaluationResult.fromJson(Map<String, dynamic> json)
     : evaluationId = json['askedQuestionId'] as String,
       dateOfEvaluation = json['dateOfEvaluation'] as DateTime,
-      results = json['results']
-          .map((item) => Result.fromJson(item as Map<String, dynamic>))
-          .toList();
-}
-
-class Result {
-  final String askedQuestionId;
-  final int result;
-
-  Result(this.askedQuestionId, this.result);
-
-  Result.fromJson(Map<String, dynamic> json)
-    : askedQuestionId = json['askedQuestionId'] as String,
-      result = json['result'] as int;
+      results = (json['results'] as Map<String, dynamic>)
+          .map((key, value) => MapEntry(key, List<int>.from(value)));
 }
 
 class Question {

@@ -5,7 +5,7 @@ Lectura is a simple app for evaluating lectures in university
 ## Dependencies
 
 ````shell
-dart pub add dart pub add shared_preferences flutter_launcher_icons flutter_soloud uuid
+dart pub add dart pub add shared_preferences flutter_launcher_icons flutter_soloud uuid intl flutter_rating
 ````
 
 ````shell

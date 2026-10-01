@@ -39,6 +39,8 @@ dependencies:
   horizontal_stepper_flutter: ^1.0.3
   flutter_soloud: ^5.1.2
   uuid: ^4.6.0
+  intl: ^0.20.3
+  flutter_rating: ^2.0.2
 
 dev_dependencies:
   flutter_test:

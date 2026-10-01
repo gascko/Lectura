@@ -2,43 +2,10 @@
   {
     "evaluationId": "661b668e-8d2a-47c5-b58c-66555e73de65",
     "dateOfEvaluation": "1969-07-20 20:18:04Z",
-    "results": [
-      {
-        "askedQuestionId": "06808442-6685-4c97-8ea9-16b570ccfe9d",
-        "result": 1
-      },
-      {
-        "askedQuestionId": "90e1ca65-b72e-4f26-87fd-00691ac3f4df",
-        "result": 2
-      },
-      {
-        "askedQuestionId": "be4f5e52-9cd6-4db6-b734-6511d2bfa614",
-        "result": 3
-      },
-      {
-        "askedQuestionId": "06808442-6685-4c97-8ea9-16b570ccfe9d",
-        "result": 3
-      },
-      {
-        "askedQuestionId": "90e1ca65-b72e-4f26-87fd-00691ac3f4df",
-        "result": 2
-      },
-      {
-        "askedQuestionId": "be4f5e52-9cd6-4db6-b734-6511d2bfa614",
-        "result": 2
-      },
-      {
-        "askedQuestionId": "06808442-6685-4c97-8ea9-16b570ccfe9d",
-        "result": 5
-      },
-      {
-        "askedQuestionId": "90e1ca65-b72e-4f26-87fd-00691ac3f4df",
-        "result": 4
-      },
-      {
-        "askedQuestionId": "be4f5e52-9cd6-4db6-b734-6511d2bfa614",
-        "result": 2
-      }
-    ]
+    "results": {
+      "06808442-6685-4c97-8ea9-16b570ccfe9d": [0,1,2],
+      "90e1ca65-b72e-4f26-87fd-00691ac3f4df": [5,3,1],
+      "be4f5e52-9cd6-4db6-b734-6511d2bfa614": [2,5,2]
+    }
   }
 ]

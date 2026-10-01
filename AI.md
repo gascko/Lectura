@@ -591,3 +591,199 @@ questionIds = List<String>.from(json['questionIds']);
 
 Das passt auch gut zu deinem vorherigen Code, weil widget.evaluation.questionIds[currentQuestion - 1] danach tatsächlich sauber einen String zurückliefert.
 
+---
+
+Datum: 30.09.2026
+
+# Frage
+
+Wie kann ich dieses JSON Objekt in Flutter in die entsprechende Datenstruktur Map<String, List<Int>> mappen?"results": {
+"06808442-6685-4c97-8ea9-16b570ccfe9d": [0,1,2],
+"90e1ca65-b72e-4f26-87fd-00691ac3f4df": [5,3,1],
+"be4f5e52-9cd6-4db6-b734-6511d2bfa614": [2,5,2]
+}
+
+# Antwort
+
+Du kannst das JSON-Objekt results in Flutter/Dart direkt in eine Map<String, List<int>> umwandeln. Wichtig ist, dass jsonDecode() zunächst dynamische Typen (dynamic) liefert.
+
+Empfohlene Variante
+
+Angenommen, dein vollständiges JSON wurde bereits dekodiert:
+
+final Map<String, dynamic> json = jsonDecode(response.body);
+
+final Map<String, List<int>> results =
+(json['results'] as Map<String, dynamic>).map(
+(key, value) => MapEntry(
+key,
+List<int>.from(value),
+),
+);
+
+
+Danach hat results genau den gewünschten Typ:
+
+Map<String, List<int>>
+
+
+und enthält beispielsweise:
+
+{
+'06808442-6685-4c97-8ea9-16b570ccfe9d': [0, 1, 2],
+'90e1ca65-b72e-4f26-87fd-00691ac3f4df': [5, 3, 1],
+'be4f5e52-9cd6-4db6-b734-6511d2bfa614': [2, 5, 2],
+}
+
+In einer fromJson-Methode
+
+Falls du ein Model verwendest, würde ich es so schreiben:
+
+class MyResponse {
+final Map<String, List<int>> results;
+
+MyResponse({
+required this.results,
+});
+
+factory MyResponse.fromJson(Map<String, dynamic> json) {
+return MyResponse(
+results: (json['results'] as Map<String, dynamic>).map(
+(key, value) => MapEntry(
+key,
+List<int>.from(value),
+),
+),
+);
+}
+}
+
+
+Dann kannst du einfach:
+
+final json = jsonDecode(response.body);
+final response = MyResponse.fromJson(json);
+
+print(response.results);
+
+
+verwenden.
+
+Warum List<int>.from(value)?
+
+Nach dem JSON-Decoding ist ein Eintrag zunächst effektiv etwas wie:
+
+String -> List<dynamic>
+
+
+Du möchtest aber:
+
+String -> List<int>
+
+
+List<int>.from(value) übernimmt genau diese Typumwandlung.
+
+Kurz gesagt: Für deinen Fall ist diese Zeile die entscheidende Lösung:
+
+(json['results'] as Map<String, dynamic>)
+.map((key, value) => MapEntry(key, List<int>.from(value)));
+
+---
+
+Datum: 01.10.2026
+
+# Frage:
+
+Ich möchte ein kleines Label in form eines Kreises umsetzen wie kann ich das in Flutter machen?
+
+# Antwort
+
+Ja. Für ein kleines rundes Label, zum Beispiel eine Zahl wie„3“ in einem farbigen Kreis, eignet sich ein Container mit BoxDecoration und BoxShape.circle. Flutter unterstützt BoxShape.circle direkt.
+
+Einfaches Beispiel
+Container(
+width: 24,
+height: 24,
+alignment: Alignment.center,
+decoration: const BoxDecoration(
+color: Colors.blue,
+shape: BoxShape.circle,
+),
+child: const Text(
+'3',
+style: TextStyle(
+color: Colors.white,
+fontSize: 12,
+fontWeight: FontWeight.bold,
+),
+),
+)
+
+
+Das ergibt ungefähr:
+
+🔵
+3
+
+
+Also einen 24 × 24 px großen Kreis mit der Zahl mittig darin.
+
+Als wiederverwendbares Widget
+
+Wenn du das Label häufiger brauchst, würde ich direkt ein eigenes Widget daraus machen:
+
+class CircleLabel extends StatelessWidget {
+final String text;
+final Color color;
+
+const CircleLabel({
+super.key,
+required this.text,
+this.color = Colors.blue,
+});
+
+@override
+Widget build(BuildContext context) {
+return Container(
+width: 24,
+height: 24,
+alignment: Alignment.center,
+decoration: BoxDecoration(
+color: color,
+shape: BoxShape.circle,
+),
+child: Text(
+text,
+style: const TextStyle(
+color: Colors.white,
+fontSize: 12,
+fontWeight: FontWeight.bold,
+),
+),
+);
+}
+}
+
+
+Verwendung:
+
+CircleLabel(text: '5')
+
+
+oder:
+
+CircleLabel(
+text: '2',
+color: Colors.red,
+)
+
+Falls du deine results-Map anzeigen möchtest
+
+Passend zu deiner vorherigen Frage könntest du beispielsweise die Anzahl der Ergebnisse darstellen:
+
+CircleLabel(
+text: results['gruppeA']?.length.toString() ?? '0',
+)
+
+
+Wenn results['gruppeA'] beispielsweise [3, 7, 12] enthält, wird im Kreis 3 angezeigt.

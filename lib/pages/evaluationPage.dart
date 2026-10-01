@@ -1,11 +1,10 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:lectura/api.dart';
 import 'package:lectura/main.dart';
 import 'package:lectura/objects.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
 import 'finishEvaluationPage.dart';
+import 'evaluationResultPage.dart';
 
 class EvaluationPage extends StatefulWidget {
   final Evaluation evaluation;
@@ -13,16 +12,16 @@ class EvaluationPage extends StatefulWidget {
   const EvaluationPage({super.key, required this.evaluation});
 
   @override
-  State<EvaluationPage> createState() => evaluationPageState();
+  State<EvaluationPage> createState() => EvaluationPageState();
 }
 
-class evaluationPageState extends State<EvaluationPage> {
-  evaluationPageState();
+class EvaluationPageState extends State<EvaluationPage> {
+  EvaluationPageState();
 
   int? selectedValue;
   int currentQuestion = 1;
   List<String> emojis = ["🤯", "😕", "🫤", "😊", "🤩"];
-  List<Result> results = [];
+  Map<String, List<int>> results = {};
   late Future<List<Question>> questionsFuture;
 
   @override
@@ -41,13 +40,15 @@ class evaluationPageState extends State<EvaluationPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Umfrage beenden?'),
-          content: const Text('Möchtest du die Umfrage wirklich beenden?'),
+          content: const Text(
+            'Möchtest du die Umfrage beenden, ohne sie auszuwerten oder eine Auswertung erstellen?',
+          ),
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
-              child: const Text('Nein'),
+              child: const Text('Abbrechen'),
               onPressed: () {
                 Navigator.pop(context, false);
               },
@@ -56,11 +57,33 @@ class evaluationPageState extends State<EvaluationPage> {
               style: TextButton.styleFrom(
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
-              child: const Text('Ja'),
+              child: const Text('Beenden ohne Auswertung'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const LecturaApp()),
+                );
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Beenden und Auswerten'),
+              onPressed: () {
+                EvaluationResult result = EvaluationResult(
+                  widget.evaluation.id,
+                  DateTime.now(),
+                  results,
+                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EvaluationResultPage(
+                      evaluation: widget.evaluation,
+                      evaluationResult: result,
+                    ),
+                  ),
                 );
               },
             ),
@@ -168,30 +191,23 @@ class evaluationPageState extends State<EvaluationPage> {
                               onSelected: (bool selected) {
                                 setState(() {
                                   selectedValue = selected ? index : null;
-                                  results.add(
-                                    Result(
-                                      widget
-                                          .evaluation
-                                          .questionIds[currentQuestion - 1],
-                                      selectedValue!,
+                                  results.putIfAbsent(widget.evaluation.questionIds[currentQuestion - 1], () => []).add(selectedValue!);
+                                });
+                                if (currentQuestion <
+                                    widget.evaluation.questionIds.length) {
+                                  currentQuestion += 1;
+                                  selectedValue = null;
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const FinishEvaluationPage(),
                                     ),
                                   );
-                                  if (currentQuestion <
-                                      widget.evaluation.questionIds.length) {
-                                    currentQuestion += 1;
-                                    selectedValue = null;
-                                  } else {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const FinishEvaluationPage(),
-                                      ),
-                                    );
-                                    currentQuestion = 1;
-                                    selectedValue = null;
-                                  }
-                                });
+                                  currentQuestion = 1;
+                                  selectedValue = null;
+                                }
                               },
                             );
                           }).toList(),

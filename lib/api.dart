@@ -11,6 +11,20 @@ Future<List<Question>> getQuestions() async {
   return questions;
 }
 
+Future<Question?> getQuestionById(String questionId) async {
+  final String response = await rootBundle.loadString('assets/questionsInit.json');
+  final List<dynamic> jsonList = await json.decode(response);
+  final List<Question> questions = jsonList
+      .map((item) => Question.fromJson(item as Map<String, dynamic>))
+      .toList();
+  for (int i = 0; i < questions.length; i++) {
+    if (questions[i].id == questionId) {
+      return questions[i];
+    }
+  }
+  return null;
+}
+
 Future<List<Evaluation>> getEvaluations() async {
   final String response = await rootBundle.loadString('assets/evaluationInit.json');
   final List<dynamic> jsonList = await json.decode(response);
