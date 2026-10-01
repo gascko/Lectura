@@ -1,17 +1,19 @@
---
-Datum: 16.09.2026
---
+# Prompt
 
-# Frage:
+> Datum: 16.09.2026
+
+````text
 Schau dir die Datei @lib\pages\createEvaluationPage.dart an. Wenn ich die Seite im Android Emulator aufrufe, ausgehend von der Seite @lib\main.dart, sollten eigentlich zu Beginn
 alle Questions und Topics geladen werden (siehe die Funktionen loadTopics() und loadQuestions()). Leider werden die topics erst geladen wenn ich mindestens einmal mit der Seite  
 interagiert habe, also zum Beispiel den "weiter" button gedrückt habe und danach auf den "Zurück"-Button klicke. Die Questions werden gar nicht geladen. Ich habe geprüft ob      
 überhaupt Daten vorhanden sind. Die Funktionen questionNotifier.loadQuestions und topicNotifier.loadTopics funktionieren in einem anderen Szenarion korrekt und liefern           
 entsprechend Werte zurück. Suche nach möglichen Fehlern in der createEvaluationPage.dart Datei, nehme jedoch keine Änderungen vor, greife nicht auf git zu und lese nur die       
 gegebenen Dateien ein. Wenn du mehr Kontext brauchst Frage danach.
+````
 
-# Antwort:
+# Antwort
 
+````text
 Diagnose: Warum Topics verzögert und Questions gar nicht laden
 Der Kernfehler liegt nicht in den Loader-Funktionen selbst, sondern in zwei strukturellen Problemen in createEvaluationPage.dart, die sich zu genau deinem Symptom verdichten.
 Fehler 1: Die Step-Widgets sind StatelessWidget-Instanzen, die einmalig in final steps angelegt werden → initState/build wird nicht neu ausgeführt
@@ -53,7 +55,6 @@ questions = await questionNotifier.loadQuestions(newEvaluation.topic);
 
 Zum Zeitpunkt dieses Aufrufs ist newEvaluation.topic noch "" (leer), weil loadTopics seine await-Zukunft erst später auflöst und erst dann newEvaluation.topic = topics.first
 setzt.
-
 Folge:
 - questionNotifier.loadQuestions("") wird mit leerem Topic aufgerufen.
 - In storage.dart: storage.getStringList("") ?? List.empty() → leere Liste (kein Schlüssel "" existiert).
@@ -152,19 +153,19 @@ Soll ich zu einem dieser Punkte einen konkreten Code-Patch vorschlagen, oder bra
 
 Soll ich zu einem dieser Punkte einen konkreten Code-Patch vorschlagen, oder brauchst du noch mehr Kontext (z. B. die Init.json oder settingsPage.dart)?
 
-Hinweis zu meiner Suche: Die Web-Suche lieferte keine verwertbaren Treffer, meine Aussagen zu Element.updateChild/identischen Widget-Instanzen basieren auf dem
-Standard-Flutter-Rendering-Verhalten.
+````
 
----
-Datum: 25.09.2026
----
+# Prompt
 
-# Frage:
+> Datum: 25.09.2026
 
+````text
 Wie kann ich in Flutter die zurück taste bzw. die zurück wisch geste umleiten auf eine eigene funktion die erstmal eine Warnung als Pop-Up Window anzeigt oder so bevor man die Seite verlässt?
+````
 
-# Antwort:
+# Antwort
 
+````text
 Ja. In aktuellem Flutter ist dafür PopScope gedacht. Damit kannst du die Zurück-Navigation zunächst blockieren, dein eigenes Dialogfenster anzeigen und erst nach Bestätigung Navigator.pop() ausführen. PopScope behandelt insbesondere die Android-System-Zurück-Geste bzw. Zurück-Taste.
 
 Beispiel: Warnung vor dem Verlassen
@@ -274,13 +275,13 @@ child: ...
 
 
 Damit kommt die Warnung nur dann, wenn tatsächlich ungespeicherte Änderungen vorhanden sind.
+````
 
-Wichtig bei iOS: Die Cupertino-Swipe-Back-Geste verhält sich etwas anders. Wenn canPop: false zusammen mit CupertinoRouteTransitionMixin verwendet wird, wird laut Flutter-Dokumentation die Geste gar nicht erkannt und der Callback entsprechend nicht ausgelöst.
+# Prompt
 
-Falls du mir deinen aktuellen Scaffold/Page-Code schickst, kann ich dir PopScope direkt an der richtigen Stelle einbauen.
+> Datum: 26.09.2026
 
-# Frage
-
+````text
 Wie kann ich in Flutter auf async Abfragen warten? Konkret möchte ich in diesem Text Widget:Text(
 questions.where(
 (question) =>
@@ -298,8 +299,12 @@ questions = questionsFuture;
 }
 });
 }Wie kann ich das umsetzen, dass entweder ein circular Warte screen angezeigt wird und der Text geladen wird?
+````
 
-# Antwort:
+
+# Antwort
+
+````text
 Ja. In deinem Fall gibt es zwei saubere Lösungen. Ich würde FutureBuilder verwenden, weil Flutter damit Ladezustand, Fehler und fertige Daten direkt abbilden kann. Wichtig ist außerdem: In deinem aktuellen Code fehlt setState(), weshalb Flutter nach dem Laden der questions nicht automatisch neu zeichnet.
 
 Flutter empfiehlt, das Future bereits vorher, zum Beispiel in initState(), zu erzeugen und nicht direkt inbuild(), da es sonst bei Rebuilds erneut gestartet werden kann.
@@ -475,9 +480,13 @@ if (!mounted) return;
 schützt dich davor, setState() aufzurufen, wenn der Benutzer die Seite inzwischen verlassen hat.
 
 Konkret für deinen bestehenden Aufbau würde ich daher isLoading + setState() einsetzen. Wenn getQuestions() ausschließlich für diesen einen Bereich benötigt wird, ist dagegen FutureBuilder die elegantere Lösung.
+````
 
-# Frage
+# Prompt
 
+> Datum: 27.09.2026
+
+````text
 Ich möchte in Flutter einen JSON Array aus Strings parsen. Dafür habe ich in der Klasse eine Methode erstellt toJson welche den geladenen JSON String bekommt als Parameter und daraus die einzelnen Member der Klasse zieht. Die Klasse sieht so aus:
 
 class Evaluation {
@@ -493,12 +502,14 @@ Evaluation.fromJson(Map<String, dynamic> json)
 name = json['name'] as String,
 creationDate = DateTime.parse(json['creationDate'] as String),
 questionIds = json['questionIds'] as List<String>;
-}​‌
+}
 
 Leider funktioniert die Letzte Zeile nicht, bei der ich versuche aus einen Array von Strings jeweils die einzelnen Strings in dem Member questionIds zu speichern. Wie kann ich das lösen?
+````
 
 # Antwort
 
+````text
 Das Problem liegt am Typ, den Dart beim JSON-Decoding erzeugt: Ein JSON-Array wird zunächst als List<dynamic> interpretiert und kann deshalb nicht direkt mit as List<String> gecastet werden. Die Dart-Dokumentation beschreibt genau dieses Verhalten.
 
 Einfachste Lösung
@@ -587,24 +598,23 @@ questionIds = (json['questionIds'] as List)
 Für deinen Fall würde ich aber eindeutig die kürzere Variante verwenden:
 
 questionIds = List<String>.from(json['questionIds']);
+````
 
+# Prompt
 
-Das passt auch gut zu deinem vorherigen Code, weil widget.evaluation.questionIds[currentQuestion - 1] danach tatsächlich sauber einen String zurückliefert.
+> Datum: 30.09.2026
 
----
-
-Datum: 30.09.2026
-
-# Frage
-
+````text
 Wie kann ich dieses JSON Objekt in Flutter in die entsprechende Datenstruktur Map<String, List<Int>> mappen?"results": {
 "06808442-6685-4c97-8ea9-16b570ccfe9d": [0,1,2],
 "90e1ca65-b72e-4f26-87fd-00691ac3f4df": [5,3,1],
 "be4f5e52-9cd6-4db6-b734-6511d2bfa614": [2,5,2]
 }
+````
 
 # Antwort
 
+````text
 Du kannst das JSON-Objekt results in Flutter/Dart direkt in eine Map<String, List<int>> umwandeln. Wichtig ist, dass jsonDecode() zunächst dynamische Typen (dynamic) liefert.
 
 Empfohlene Variante
@@ -687,17 +697,19 @@ Kurz gesagt: Für deinen Fall ist diese Zeile die entscheidende Lösung:
 
 (json['results'] as Map<String, dynamic>)
 .map((key, value) => MapEntry(key, List<int>.from(value)));
+````
 
----
+# Prompt
 
-Datum: 01.10.2026
+> Datum: 01.10.2026
 
-# Frage:
-
+````text
 Ich möchte ein kleines Label in form eines Kreises umsetzen wie kann ich das in Flutter machen?
+````
 
 # Antwort
 
+````text
 Ja. Für ein kleines rundes Label, zum Beispiel eine Zahl wie„3“ in einem farbigen Kreis, eignet sich ein Container mit BoxDecoration und BoxShape.circle. Flutter unterstützt BoxShape.circle direkt.
 
 Einfaches Beispiel
@@ -776,14 +788,4 @@ CircleLabel(
 text: '2',
 color: Colors.red,
 )
-
-Falls du deine results-Map anzeigen möchtest
-
-Passend zu deiner vorherigen Frage könntest du beispielsweise die Anzahl der Ergebnisse darstellen:
-
-CircleLabel(
-text: results['gruppeA']?.length.toString() ?? '0',
-)
-
-
-Wenn results['gruppeA'] beispielsweise [3, 7, 12] enthält, wird im Kreis 3 angezeigt.
+````

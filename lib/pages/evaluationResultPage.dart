@@ -143,14 +143,17 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
                             Padding(
                               padding: EdgeInsetsGeometry.all(10),
                               child: Text(
-                                "${averageRating.roundToDouble()} / 5",
+                                "${averageRating.toStringAsFixed(2)} / 5",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 30,
                                 ),
                               ),
                             ),
-                            StarRating(rating: averageRating.roundToDouble()),
+                            StarRating(
+                              allowHalfRating: true,
+                              rating: averageRating,
+                            ),
                             Text("${totalAnswers} Antworten"),
                           ],
                         ),
@@ -218,7 +221,7 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
                                           end: 30,
                                         ),
                                         child: Text(
-                                          "${calculateAverageRatingForQuestion(snapshot.data![index].id).roundToDouble()} / 5",
+                                          "${calculateAverageRatingForQuestion(snapshot.data![index].id).toStringAsFixed(2)} / 5",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
@@ -226,10 +229,11 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
                                         ),
                                       ),
                                       StarRating(
+                                        allowHalfRating: true,
                                         rating:
                                             calculateAverageRatingForQuestion(
                                               snapshot.data![index].id,
-                                            ).roundToDouble(),
+                                            ),
                                       ),
                                     ],
                                   ),

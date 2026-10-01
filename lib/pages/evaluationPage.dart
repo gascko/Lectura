@@ -191,7 +191,7 @@ class EvaluationPageState extends State<EvaluationPage> {
                               onSelected: (bool selected) {
                                 setState(() {
                                   selectedValue = selected ? index : null;
-                                  results.putIfAbsent(widget.evaluation.questionIds[currentQuestion - 1], () => []).add(selectedValue!);
+                                  results.putIfAbsent(widget.evaluation.questionIds[currentQuestion - 1], () => []).add(selectedValue! + 1);
                                 });
                                 if (currentQuestion <
                                     widget.evaluation.questionIds.length) {
