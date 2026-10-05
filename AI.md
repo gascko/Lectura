@@ -789,3 +789,332 @@ text: '2',
 color: Colors.red,
 )
 ````
+# prompt
+
+> Datum: 02.10.2026
+
+````text
+Schau dir die Datei @lib\pages\evaluationPage.dart an. Wenn ich die Seite im Web aufrufe und die höhe des Fensters verkleinere, wird ab einer bestimmten höhe ein Render Felx     
+  Fehler geworfen. Grund dafür ist, dass die ChoiceChips nicht scrollbar sind bzw. sich nicht weiter verkleinern lassen. Suche nach Lösungen für dieses Problem. Betrachte dafür    
+  nur diese Datei keine anderen. Nutze kein Git und nehme vorerst auch keine Änderungen an der Datei vor.
+````
+
+# Antwort
+
+````text
+  Ursache des RenderFlex-Errors
+
+  Der Überlauf kommt von der innersten Column (evaluationPage.dart:157), nicht von den Chips „an sich". Die Kette:
+
+  Scaffold (L97)
+    body: FutureBuilder (L123)
+      Column (L129)
+        - Text „Frage …"          (L131)
+        - Padding/Progress        (L139)
+        - Expanded (L149)
+            Row (L150)
+              Expanded (L152)
+                Card (L153)
+                  Padding (L155)
+                    Column (L157, mainAxisAlignment: center)   ← hier überläuft es
+                      - Padding → Text (Frage)   (L160)
+                      - Padding → Wrap (5 Chips) (L184/188)
+
+  Zwei Faktoren zusammen erzeugen den harten Fehler:
+
+  1. Expanded (L149) gibt der Row/Card eine endliche Max-Höhe (= Screen − AppBar − „Frage"-Zeile − Fortschrittsbalken). Damit bekommt die innerste Column (L157) eine feste
+  Begrenzung. Wenn deren Inhalt mehr Platz braucht, wird daraus ein RenderFlex overflowed by … statt eines weichen Clippings.
+  2. Der Inhalt schrumpft nicht mit der Höhe:
+    - Die Emoji-Chips haben fontSize: width * 0.05 (L207–212) – also breiten-, nicht höhenbasiert. Wird nur die Höhe verkleinert, bleiben die Chips gleich groß.
+    - Wrap (L188) rechnet seine Höhe aus der Anzahl der umgebrochenen Zeilen (abhängig von der Breite). Ein Wrap kennt kein „shrink auf verfügbare Höhe" – er hat immer eine feste
+  Mindesthöhe.
+
+  Sobald verfügbare Höhe < Mindesthöhe(Text + Wrap) wird, überläuft die Column (L157). mainAxisAlignment: center (L158) hilft nicht – es zentriert nur, gibt aber keinen
+  zusätzlichen Platz.
+
+  Lösungsoptionen (nur diese Datei, ohne Änderungen)
+
+  Alle bleiben lokal in build() / der inneren Struktur:
+
+  Option A – Inhaltsbereich scrollbar machen (robusteste Standardlösung)
+
+  Die innere Column (L157) in einen SingleChildScrollView legen, der durch die Card (L153) höhenbegrenzt ist. Der Inhalt kann dann wachsen und scrollt statt zu überlaufen.
+  child: SingleChildScrollView(
+    child: Column( ... Frage + Wrap ... ),
+  )
+  - Vorteil: Behält Größe/Design der Chips, funktioniert bei jeder Fensterhöhe.
+  - Haken: mainAxisAlignment: center (L158) lässt sich in einem SingleChildScrollView nicht verwenden (Unbounded-Height → eigener Fehler). Zentrieren-gewünscht? Dann Zentrum über
+  ein Center + ConstrainedBox/LayoutBuilder simulieren oder die Zentrierung aufgeben.
+
+  Option B – Inhalte per FittedBox herunterskalieren (bewahrt das Zentrieren)
+
+  Die innere Column (L157) in FittedBox(fit: BoxFit.scaleDown) packen. FittedBox zentriert standardmäßig und skaliert den Inhalt nur herab, wenn er zu groß ist.
+  FittedBox(fit: BoxFit.scaleDown,
+    child: Column( ... Frage + Wrap ... ))
+  - Vorteil: Behält „zentriert, wenn Platz da" + schrumpft automatisch → passt exakt zum beabsichtigten Layout, keine Scroll-Lesen.
+  - Haken: Bei scaleDown wird der Wrap ggf. als eine Zeile maßstabsgezogen (kleinere statt mehrerer Zeilen). Kann optisch „zu klein" wirken; muss man visuell prüfen.
+
+  Option C – Chips höhenadaptiv machen (direkt an der von dir genannten Ursache)
+
+  Die Emoji-Größe an die Höhe koppeln, damit die Chips wirklich schrumpfen. Statt width * 0.05 eine höhenbewusste Größe nutzen, ideal über LayoutBuilder um die Card, damit die
+  tatsächlich verfügbare Höhe bekannt ist:
+  LayoutBuilder(builder: (context, constraints) {
+    final size = math.min(constraints.maxWidth, constraints.maxHeight);
+    // fontSize: size * Faktor  (statt size.width * 0.05)
+  })
+  - Vorteil: Treffsicherer Fix für „Chips lassen sich nicht verkleinern"; Chips passen sich an und der Wrap braucht weniger Zeilen.
+  - Haken: Bei sehr kleinem Faktor werden die Emojis klein; rein skalierend löst es den Überlauf nicht, wenn Text + Chips zusammen zu hoch bleiben (dann kombiniert man mit A oder
+  B).
+
+  Option D – Chips horizontal scrollbar (nur, wenn der Überlauf durch Zeilenbruch entsteht)
+
+  Wrap (L188) durch SingleChildScrollView(scrollDirection: Axis.horizontal) + Row ersetzen, damit die 5 Chips nie auf mehrere Zeilen brechen. Weniger Zeilen = geringere benötigte
+  Höhe.
+  - Vorteil: Halte-Zeilenhöhe konstant niedrig.
+  - Haken: Löst den Überlauf nur mit, wenn die Höhe vor allem durch das vertikale Umbrechen kam; bei breitem/eben schmalem Fenster unvollständig.
+
+  Empfehlung
+
+  Höhe.
+  - Vorteil: Halte-Zeilenhöhe konstant niedrig.
+  - Haken: Löst den Überlauf nur mit, wenn die Höhe vor allem durch das vertikale Umbrechen kam; bei breitem/eben schmalem Fenster unvollständig.
+
+  Empfehlung
+
+  Für dieses konkrete Layout (Zentrierung ist beabsichtigt, Chips sollen groß bleiben) ist Option B (FittedBox scaleDown) die kleinste, auf die Ursache zugeschnittene Änderung, die
+  den Überlauf verhindert und das Design beibehält. Wenn die Chips bei kleiner Höhe lieber lesbar + scrollbar bleiben sollen, ist Option A (Scroll + manuelles Zentrieren) die
+  zuverlässigste Wahl. Option C nutzt man gut in Kombination (Chips skalieren mit der Höhe), wenn man die Zentrierung und Größe sauber über LayoutBuilder steuern will.
+
+  Sag mir, welche Richtung du willst (B, A oder A+C), dann setze ich sie um – vorher ändere ich nichts.
+````
+
+# Prompt
+
+> Datum: 02.10.2026
+
+````text
+Ich habe diese Seite in Flutter:import 'dart:async';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class FinishEvaluationPage extends StatefulWidget {
+  const FinishEvaluationPage({super.key});
+
+  @override
+  State<FinishEvaluationPage> createState() => FinishEvaluationPageState();
+}
+
+class FinishEvaluationPageState extends State<FinishEvaluationPage> {
+  int _counter = 30000;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (_counter <= 0) {
+        Navigator.pop(context);
+      }
+      setState(() {
+        _counter--;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PopScope(
+        canPop: false,
+        child: ListView(
+          padding: EdgeInsetsGeometry.all(10),
+          children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_rounded,
+                    color: Colors.green,
+                    size: 200,
+                  ),
+                  Text(
+                    "Danke für dein Feedback",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  Text("Bitte gib das Gerät an die nächste Person weiter."),
+                  SizedBox(height: 30),
+                  Text(
+                    "Nächste Umfrage startet automatisch in ${_counter} Sekunden...",
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}Nun möchte ich aber den Text und das Icon auf der Seite vertical und horizontal zentrieren, wie mache ich das?
+````
+
+# Antwort
+
+````text
+Ja. Das Problem ist deine ListView: Deine Column erhält darin nicht automatisch die komplette Bildschirmhöhe. Deshalb bringt mainAxisAlignment: MainAxisAlignment.center aktuell kaum etwas. Flutter richtet eine Column nur innerhalb des Platzes aus, der ihr durch die Constraints des Parents zur Verfügung steht.
+
+Da deine Finish-Seite nur diesen einen Inhaltsblock enthält, gibt es zwei gute Lösungen.
+
+Variante 1: Ohne Scrollen, am einfachsten
+
+Wenn die Seite nicht scrollbar sein muss, brauchst du die ListView gar nicht:
+
+body: PopScope(
+  canPop: false,
+  child: Center(
+    child: Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.check_circle_rounded,
+            color: Colors.green,
+            size: 200,
+          ),
+          const Text(
+            "Danke für dein Feedback",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          const Text(
+            "Bitte gib das Gerät an die nächste Person weiter.",
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 30),
+          Text(
+            "Nächste Umfrage startet automatisch in $_counter Sekunden...",
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    ),
+  ),
+),
+
+
+Der entscheidende Teil ist:
+
+Center(
+  child: Column(
+    mainAxisSize: MainAxisSize.min,
+
+
+Damit passiert:
+
+┌───────────────────────────────┐
+│                               │
+│                               │
+│              ✅               │
+│                               │
+│    Danke für dein Feedback    │
+│    Bitte gib das Gerät ...    │
+│                               │
+│     Nächste Umfrage in ...    │
+│                               │
+│                               │
+└───────────────────────────────┘
+
+
+Die Column ist nur so groß wie ihr Inhalt und Center positioniert diesen Block horizontal und vertikal in der verfügbaren Fläche. Ein Center um eine Column ist eine übliche Lösung für horizontale und vertikale Zentrierung.
+
+Variante 2: Zentriert und trotzdem responsive scrollbar
+
+Für deine Web-App würde ich eher diese Variante nehmen. Dein Icon ist immerhin 200 px groß. Bei einem sehr kleinen Browserfenster könnte der Inhalt sonst nicht mehr hineinpassen.
+
+body: PopScope(
+  canPop: false,
+  child: LayoutBuilder(
+    builder: (context, constraints) {
+      return ListView(
+        padding: const EdgeInsets.all(10),
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight - 20,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.check_circle_rounded,
+                  color: Colors.green,
+                  size: 200,
+                ),
+                const Text(
+                  "Danke für dein Feedback",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                const Text(
+                  "Bitte gib das Gerät an die nächste Person weiter.",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  "Nächste Umfrage startet automatisch in $_counter Sekunden...",
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    },
+  ),
+),
+
+
+Das hat den Vorteil:
+
+Großes Fenster: Inhalt ist horizontal und vertikal zentriert.
+Kleines Fenster: Die Seite kann gescrollt werden, statt einen Overflow zu erzeugen.
+
+Das Muster LayoutBuilder → ListView → Container/ConstrainedBox mit minHeight → Center/Column wird genau für das Zentrieren innerhalb einer scrollbaren Fläche verwendet.
+
+Noch ein wichtiger Fehler in deinem Timer
+
+Unabhängig vom Zentrieren solltest du außerdem deinen Timer in dispose() stoppen:
+
+@override
+void dispose() {
+  _timer?.cancel();
+  super.dispose();
+}
+
+
+Und ich würde deine Timer-Logik leicht ändern, damit nach Navigator.pop() nicht noch setState() ausgeführt wird:
+
+_timer = Timer.periodic(
+  const Duration(seconds: 1),
+  (timer) {
+    if (_counter <= 1) {
+      timer.cancel();
+
+      Navigator.pop(context);
+      return;
+    }
+
+    setState(() {
+      _counter--;
+    });
+  },
+);
+
+
+Für deine Finish-Seite würde ich Variante 2 nehmen. Sie passt besonders gut zu deinem bisherigen Ziel, dass Lectura auch beim Verkleinern des Browserfensters keine Layout-Overflows bekommt.
+````

@@ -25,8 +25,8 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Neue Evaluation",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          "Neue Evaluation erstellen",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       persistentFooterButtons: [

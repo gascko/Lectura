@@ -68,13 +68,13 @@ class LecturaAppState extends State<LecturaApp> {
       'title': 'Neue Evaluation erstellen',
       'subtitle': 'Neue Evaluation für eine Vorlesung anlegen und speichern',
       'page': CreateEvaluationPage(),
-      'icon': Icons.upload_file_outlined
+      'icon': Icons.upload_file_outlined,
     },
     {
       'title': 'Einstellungen',
       'subtitle': 'Lectura konfigurieren',
       'page': SettingsPage(),
-      'icon': Icons.settings
+      'icon': Icons.settings,
     },
   ];
 
@@ -83,67 +83,59 @@ class LecturaAppState extends State<LecturaApp> {
     return Scaffold(
       appBar: AppBar(
         title: Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: const Text(
-            'Evaluation',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            'Lectura',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            FilledButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(MediaQuery.of(context).size.width, 60),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          FilledButton(
+            style: FilledButton.styleFrom(
+              minimumSize: const Size(double.infinity, 60),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SelectEvaluationPage()),
+              );
+            },
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.add, size: 30),
+                SizedBox(width: 10),
+                Text("Neue Evaluation starten", style: TextStyle(fontSize: 18)),
+              ],
+            ),
+          ),
 
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SelectEvaluationPage()),
-                );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add, size: 30),
-                  SizedBox(width: 10),
-                  Text(
-                    "Neue Evaluation starten",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
+          const SizedBox(height: 10),
+
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Verwaltung",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Verwaltung",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
+          ),
+
+          const SizedBox(height: 10),
+          ...items.map(
+            (item) => ListCard(
+              icon: item['icon'],
+              title: item['title'],
+              subtitle: item['subtitle'],
+              page: item['page'],
             ),
-            SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return ListCard(
-                    icon: items[index]['icon'],
-                    title: items[index]['title'],
-                    subtitle: items[index]['subtitle'],
-                    page: items[index]['page'],
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -183,7 +175,10 @@ class ListCard extends StatelessWidget {
           ),
         ),
         title: Text(title),
-        subtitle: Text(subtitle, style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+        ),
         trailing: Icon(Icons.arrow_forward_ios),
         onTap: () {
           Navigator.push(

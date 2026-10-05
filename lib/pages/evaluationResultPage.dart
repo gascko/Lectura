@@ -50,7 +50,7 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
         }
       });
       averageRating = averageRating / totalAnswers;
-      }
+    }
   }
 
   void calculateTotalAnswers() {
@@ -77,7 +77,7 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const LecturaApp()),
-                  (route) => false,
+              (route) => false,
             );
           },
         ),
@@ -85,7 +85,7 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
           padding: EdgeInsets.all(20),
           child: const Text(
             'Auswertung',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -95,163 +95,109 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-          return Padding(
+          return ListView(
             padding: EdgeInsetsGeometry.all(10),
-            child: Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsetsGeometry.directional(bottom: 12),
-                    child: Text(
-                      widget.evaluation.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+            children: [
+              Padding(
+                padding: EdgeInsetsGeometry.directional(bottom: 12),
+                child: Text(
+                  widget.evaluation.name,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsGeometry.directional(bottom: 12),
+                child: Text(
+                  DateFormat.yMMMEd().format(
+                    widget.evaluationResult.dateOfEvaluation,
                   ),
-                  Padding(
-                    padding: EdgeInsetsGeometry.directional(bottom: 12),
-                    child: Text(
-                      DateFormat.yMMMEd().format(
-                        widget.evaluationResult.dateOfEvaluation,
-                      ),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
-                  SizedBox(
-                    height: 200,
-                    width: MediaQuery.of(context).size.width,
-                    child: Card(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      child: Padding(
-                        padding: EdgeInsetsGeometry.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Gesamtbewertung",
+                  textAlign: TextAlign.center,
+                ),
+              ),Card(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Gesamtbewertung",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        if (totalAnswers > 0)
+                          Padding(
+                            padding: EdgeInsetsGeometry.all(10),
+                            child: Text(
+                              "${averageRating.toStringAsFixed(2)} / 5",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontSize: 30,
                               ),
                             ),
-                            if (totalAnswers > 0)
-                            Padding(
-                              padding: EdgeInsetsGeometry.all(10),
-                              child: Text(
-                                "${averageRating.toStringAsFixed(2)} / 5",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                ),
-                              ),
-                            ),
-                            if (totalAnswers > 0)
-                              StarRating(
-                              allowHalfRating: true,
-                              rating: averageRating,
-                            ),
-                            Text("${totalAnswers} Antworten"),
-                          ],
-                        ),
-                      ),
+                          ),
+                        if (totalAnswers > 0)
+                          StarRating(
+                            allowHalfRating: true,
+                            rating: averageRating,
+                          ),
+                        Text("${totalAnswers} Antworten"),
+                      ],
                     ),
                   ),
-                  Expanded(
-                    child: ListView.separated(
-                      scrollDirection: Axis.vertical,
-                      itemCount: snapshot.data!.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 4),
-                      itemBuilder: (context, index) {
-                        return Card(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          child: Padding(
-                            padding: EdgeInsetsGeometry.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ...snapshot.data!.map(
+                (question) => Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Card(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    child: Padding(
+                      padding: EdgeInsetsGeometry.all(10),
+                      child: Column(
+                        children: [
+                          Padding(padding: EdgeInsetsGeometry.all(10), child:
+                          Text(question.text),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsGeometry.directional(bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
                                   padding: EdgeInsetsGeometry.directional(
-                                    bottom: 10,
+                                    end: 30,
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsGeometry.directional(
-                                          end: 20,
-                                        ),
-                                        child: Container(
-                                          width: 20,
-                                          height: 20,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.primary,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Text(
-                                            "${index + 1}",
-                                            style: TextStyle(
-                                              color: Theme.of(
-                                                context,
-                                              ).colorScheme.onPrimary,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(snapshot.data![index].text),
-                                      ),
-                                    ],
+                                  child: Text(
+                                    "${calculateAverageRatingForQuestion(question.id).toStringAsFixed(2)} / 5",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsetsGeometry.directional(
-                                    bottom: 10,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsGeometry.directional(
-                                          end: 30,
-                                        ),
-                                        child: Text(
-                                          "${calculateAverageRatingForQuestion(snapshot.data![index].id).toStringAsFixed(2)} / 5",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                      ),
-                                      StarRating(
-                                        allowHalfRating: true,
-                                        rating:
-                                            calculateAverageRatingForQuestion(
-                                              snapshot.data![index].id,
-                                            ),
-                                      ),
-                                    ],
+                                StarRating(
+                                  allowHalfRating: true,
+                                  rating: calculateAverageRatingForQuestion(
+                                    question.id,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        );
-                      },
+                        ],
+                      ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           );
         },
       ),
