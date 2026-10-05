@@ -33,12 +33,14 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
   Future<List<Question>> loadEvaluationQuestions() async {
     List<Question> questions = [];
 
-    widget.evaluationResult.results.forEach((key, values) async {
-      Question? question = await getQuestionById(key);
+    // widget.evaluationResult.results.forEach((key, values) async {
+    //   Question? question = await getQuestionById(key);
+     for (final key in widget.evaluationResult.results.keys) {
+    Question? question = await getQuestionById(key);
       if (question != null) {
         questions.add(question);
       }
-    });
+    };
     return questions;
   }
 
