@@ -20,17 +20,12 @@ import 'package:http/http.dart' as http;
 
 Future<List<Question>> getQuestions() async {
   final uri = Uri.parse(
-    'https://mhod7qpeg0.execute-api.us-east-1.amazonaws.com/dev/questions',
-  );
-
+    'https://mhod7qpeg0.execute-api.us-east-1.amazonaws.com/dev/questions',);
   final response = await http.get(uri);
 
   if (response.statusCode != 200) {
     throw Exception(
-      'Fragen konnten nicht geladen werden. Status: ${response.statusCode}',
-    );
-  }
-
+      'Fragen konnten nicht geladen werden. Status: ${response.statusCode}',);}
   final List<dynamic> jsonList = jsonDecode(response.body);
   final List<Question> questions = jsonList
       .map((item) => Question.fromJson(item as Map<String, dynamic>))
@@ -65,14 +60,55 @@ Future<Question?> getQuestionById(String questionId) async {
   return null;
 }
 
+// Future<List<Evaluation>> getEvaluations() async {
+//   final String response = await rootBundle.loadString('assets/evaluationInit.json');
+//   final List<dynamic> jsonList = await json.decode(response);
+//   final List<Evaluation> evaluations = jsonList
+//       .map((item) => Evaluation.fromJson(item as Map<String, dynamic>))
+//       .toList();
+//   return evaluations;
+// }
+
 Future<List<Evaluation>> getEvaluations() async {
-  final String response = await rootBundle.loadString('assets/evaluationInit.json');
-  final List<dynamic> jsonList = await json.decode(response);
+  final uri = Uri.parse('https://mhod7qpeg0.execute-api.us-east-1.amazonaws.com/dev/evaluations');
+
+  final response = await http.get(uri);
+
+  if (response.statusCode != 200) {
+    throw Exception(
+      'Evaluationen konnten nicht geladen werden. Status: ${response.statusCode}',
+    );
+  }
+
+  final List<dynamic> jsonList = jsonDecode(response.body);
+
   final List<Evaluation> evaluations = jsonList
       .map((item) => Evaluation.fromJson(item as Map<String, dynamic>))
       .toList();
+
   return evaluations;
 }
+
+Future<Evaluation> createEvaluation(
+  String name,
+  List<String> questionIds,
+) async {
+  final uri = Uri.parse('https://mhod7qpeg0.execute-api.us-east-1.amazonaws.com/dev/evaluations');
+
+  final response = await http.post(uri,headers: {'Content-Type': 'application/json',},
+    body: jsonEncode({'name': name,'questionIds': questionIds,}),
+  );
+  if (response.statusCode != 200 && response.statusCode != 201) {
+    throw Exception(
+      'Evaluation konnte nicht gespeichert werden. Status: ${response.statusCode}',
+    );
+  }
+  final Map<String, dynamic> jsonMap = jsonDecode(response.body);
+
+  return Evaluation.fromJson(jsonMap);
+}
+
+
 
 Future<List<EvaluationResult>> getEvaluationResults() async {
   final String response = await rootBundle.loadString('assets/evaluationResultInit.json');

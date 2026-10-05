@@ -34,9 +34,15 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {
-                  setState(() {});
-                },
+              onPressed: () async {
+  if (formularKey.currentState!.validate()) {
+    await createEvaluation(name, questionIds);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Evaluation gespeichert")),
+              );
+            }
+          },
                 child: Text("Speichern"),
               ),
             ),
@@ -109,8 +115,9 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
                   Padding(
                     padding: EdgeInsetsGeometry.directional(bottom: 20),
                     child: TextFormField(
+                      onChanged: (value) {name = value;},
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null || value.trim().isEmpty) {
                           return "Bitte vergebe noch einen Namen für die Evaluation";
                         }
                         return null;
