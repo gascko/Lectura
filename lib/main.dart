@@ -37,14 +37,19 @@ class AppTheme {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await themeNotifier.loadMode();
-  runApp(
-    MaterialApp(
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
-      themeMode: themeNotifier.mode,
-      home: LecturaApp(),
-    ),
-  );
+runApp(
+  ListenableBuilder(
+    listenable: themeNotifier,
+    builder: (context, child) {
+      return MaterialApp(
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        themeMode: themeNotifier.mode,
+        home: LecturaApp(),
+      );
+    },
+  ),
+);
 }
 
 class LecturaApp extends StatefulWidget {
