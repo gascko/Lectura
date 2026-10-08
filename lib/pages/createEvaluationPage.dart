@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lectura/api.dart';
+import 'package:lectura/main.dart';
 import 'package:lectura/objects.dart';
 import 'package:uuid/uuid.dart';
 import 'evaluationPage.dart';
@@ -20,6 +21,132 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
   String name = "";
   List<String> questionIds = [];
 
+  Future<bool?> continueDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Umfrage starten'),
+          content: const Text('Möchtest du die Umfrage speichern und starten?'),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Abbrechen'),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Umfrage ohne zu Speichern starten'),
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => EvaluationPage(
+                      evaluation: Evaluation(
+                        uuid.v4(),
+                        name,
+                        DateTime.now(),
+                        questionIds,
+                      ),
+                    ),
+                  ),
+                  (route) => false,
+                );
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Umfrage speichern und starten'),
+              onPressed: () {
+                setState(() async {
+                  await createEvaluation(name, questionIds);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => EvaluationPage(
+                        evaluation: Evaluation(
+                          uuid.v4(),
+                          name,
+                          DateTime.now(),
+                          questionIds,
+                        ),
+                      ),
+                    ),
+                    (route) => false,
+                  );
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool?> exitDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Umfrage erstellen beenden'),
+          content: const Text('Willst du die Umfrage speichern?'),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Abbrechen'),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Beenden ohne zu Speichern'),
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LecturaApp()),
+                  (route) => false,
+                );
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Umfrage speichern und beenden'),
+              onPressed: () async {
+                if (formularKey.currentState!.validate() &&
+                    questionIds.length >= numberOfQuestions) {
+                  await createEvaluation(name, questionIds);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const LecturaApp()),
+                    (route) => false,
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Alle Felder müssen ausgefüllt werden"),
+                    ),
+                  );
+                  Navigator.pop(context, false);
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,46 +155,27 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
           "Neue Evaluation erstellen",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        leading: IconButton(
+          onPressed: exitDialog,
+          icon: Icon(Icons.arrow_back),
+        ),
       ),
       persistentFooterButtons: [
         Row(
           children: [
             Expanded(
               child: ElevatedButton(
-              onPressed: () async {
-  if (formularKey.currentState!.validate()) {
-    await createEvaluation(name, questionIds);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Evaluation gespeichert")),
-              );
-            }
-          },
-                child: Text("Speichern"),
-              ),
-            ),
-            Expanded(
-              child: ElevatedButton(
                 onPressed: () {
-                  setState(() {
-                    if (formularKey.currentState!.validate()) {
-                      if (questionIds.length >= numberOfQuestions) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => EvaluationPage(
-                              evaluation: Evaluation(
-                                uuid.v4(),
-                                name,
-                                DateTime.now(),
-                                questionIds,
-                              ),
-                            ),
-                          ),
-                          (route) => false,
-                        );
-                      }
-                    }
-                  });
+                  if (formularKey.currentState!.validate() &&
+                      questionIds.length >= numberOfQuestions) {
+                    continueDialog();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Alle Felder müssen ausgefüllt werden"),
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
@@ -115,7 +223,10 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
                   Padding(
                     padding: EdgeInsetsGeometry.directional(bottom: 20),
                     child: TextFormField(
-                      onChanged: (value) {name = value;},
+                      onChanged: (value) {
+                        name = value;
+                        formularKey.currentState!.validate();
+                      },
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return "Bitte vergebe noch einen Namen für die Evaluation";

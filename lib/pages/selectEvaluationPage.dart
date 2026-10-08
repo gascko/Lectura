@@ -11,6 +11,10 @@ class SelectEvaluationPage extends StatefulWidget {
 }
 
 class SelectEvaluationPageState extends State<SelectEvaluationPage> {
+
+  List<Evaluation> targetEvaluations = [];
+  bool search = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +30,9 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
+          if (!search) {
+            targetEvaluations = snapshot.data!.toList();
+          }
           return ListView(
             padding: const EdgeInsets.all(20),
             children: [
@@ -33,9 +40,7 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
                 padding: EdgeInsets.only(bottom: 5),
                 child: Text(
                   "Vorhandene Evaluationen",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
 
@@ -58,9 +63,7 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
                     prefixIcon: const Icon(Icons.search),
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 15),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(width: 1.5),
@@ -69,28 +72,26 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
                   onChanged: (text) {
                     setState(() {
                       if (text.isNotEmpty) {
-                        snapshot.data!
-                            .where(
-                              (evaluation) =>
-                              evaluation.name.contains(text),
-                        )
+                        search = true;
+                        targetEvaluations = snapshot.data!.where(
+                                (evaluation) => evaluation.name.contains(text))
                             .toList();
+                      }
+                      else {
+                        search = false;
                       }
                     });
                   },
                 ),
               ),
 
-              ...snapshot.data!.map(
-                    (evaluation) => Padding(
+          ...targetEvaluations.map(
+                (evaluation) => Padding(
                   padding: const EdgeInsets.only(bottom: 4),
                   child: Card(
                     child: ListTile(
                       trailing: const Icon(Icons.chevron_right),
-                      title: Text(
-                        evaluation.name,
-                        softWrap: true,
-                      ),
+                      title: Text(evaluation.name, softWrap: true),
                       onTap: () {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
@@ -103,7 +104,7 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
                               ),
                             ),
                           ),
-                              (route) => false,
+                          (route) => false,
                         );
                       },
                     ),
