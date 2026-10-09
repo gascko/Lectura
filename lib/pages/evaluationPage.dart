@@ -136,10 +136,7 @@ class EvaluationPageState extends State<EvaluationPage> {
               Text(
                 "Frage ${currentQuestion} von ${widget.evaluation.questionIds.length}",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.025,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               Padding(
                 padding: EdgeInsetsGeometry.all(20),
@@ -151,118 +148,91 @@ class EvaluationPageState extends State<EvaluationPage> {
                   borderRadius: BorderRadiusGeometry.circular(20),
                 ),
               ),
-              Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                child: Card(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        child: Padding(
-                          padding: EdgeInsetsGeometry.all(10),
-                          child: FittedBox(
-                            child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsGeometry.directional(
-                                  bottom: 20,
-                                ),
-                                child: Text(
-                                  snapshot.data!
-                                      .where(
-                                        (question) =>
-                                            question.id ==
-                                            widget
-                                                .evaluation
-                                                .questionIds[currentQuestion -
-                                                1],
-                                      )
-                                      .first
-                                      .text,
-                                  style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.width *
-                                        0.025,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsGeometry.directional(
-                                  bottom: 20,
-                                ),
-                                  child: Wrap(
-                                    spacing: 5.0,
-                                    children: List<Widget>.generate(5, (
-                                      int index,
-                                    ) {
-                                      return ChoiceChip(
-                                        showCheckmark: false,
-                                        backgroundColor: Theme.of(
-                                          context,
-                                        ).colorScheme.onPrimary,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadiusGeometry.all(
-                                                Radius.circular(100),
-                                              ),
-                                        ),
-                                        label: Text(
-                                          emojis[index],
-                                          style: TextStyle(
-                                            fontSize:
-                                                MediaQuery.of(
-                                                  context,
-                                                ).size.width *
-                                                0.05,
-                                          ),
-                                        ),
-                                        selected: selectedValue == index,
-                                        onSelected: (bool selected) {
-                                          setState(() {
-                                            selectedValue = selected
-                                                ? index
-                                                : null;
-                                            results
-                                                .putIfAbsent(
-                                                  widget
-                                                      .evaluation
-                                                      .questionIds[currentQuestion -
-                                                      1],
-                                                  () => [],
-                                                )
-                                                .add(selectedValue! + 1);
-                                          });
-                                          if (currentQuestion <
-                                              widget
-                                                  .evaluation
-                                                  .questionIds
-                                                  .length) {
-                                            currentQuestion += 1;
-                                            selectedValue = null;
-                                          } else {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const FinishEvaluationPage(),
-                                              ),
-                                            );
-                                            currentQuestion = 1;
-                                            selectedValue = null;
-                                          }
-                                        },
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                            ],
-                          ),
+              Card(
+                color: Theme.of(context).colorScheme.onPrimary,
+                child: Padding(
+                  padding: EdgeInsetsGeometry.all(10),
+                  child: Column(
+                    spacing: 30,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        snapshot.data!
+                            .where(
+                              (question) =>
+                                  question.id ==
+                                  widget
+                                      .evaluation
+                                      .questionIds[currentQuestion - 1],
+                            )
+                            .first
+                            .text,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    )
-                  ],
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 20,
+                          children: List<Widget>.generate(5, (int index) {
+                            return ChoiceChip(
+                              showCheckmark: false,
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadiusGeometry.all(
+                                  Radius.circular(100),
+                                ),
+                              ),
+                              label: SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.2,
+                                  height: MediaQuery.of(context).size.width * 0.2,
+                                  child: Center(child: Text(
+                                emojis[index],
+                                style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.1,
+                                ))),
+                              ),
+                              selected: selectedValue == index,
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedValue = selected ? index : null;
+                                  results
+                                      .putIfAbsent(
+                                        widget
+                                            .evaluation
+                                            .questionIds[currentQuestion - 1],
+                                        () => [],
+                                      )
+                                      .add(selectedValue! + 1);
+                                });
+                                if (currentQuestion <
+                                    widget.evaluation.questionIds.length) {
+                                  currentQuestion += 1;
+                                  selectedValue = null;
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const FinishEvaluationPage(),
+                                    ),
+                                  );
+                                  currentQuestion = 1;
+                                  selectedValue = null;
+                                }
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

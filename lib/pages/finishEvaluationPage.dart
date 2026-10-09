@@ -9,7 +9,7 @@ class FinishEvaluationPage extends StatefulWidget {
 }
 
 class FinishEvaluationPageState extends State<FinishEvaluationPage> {
-  int counter = 3;
+  int counter = 10;
   Timer? timer;
 
   @override
