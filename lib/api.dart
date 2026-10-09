@@ -17,7 +17,7 @@ import 'package:http/http.dart' as http;
 
 Future<List<Question>> getQuestions() async {
   final uri = Uri.parse(
-    'https://mhod7qpeg0.execute-api.us-east-1.amazonaws.com/dev/questions',
+    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/questions',
   );
   final response = await http.get(uri);
 
@@ -76,7 +76,7 @@ Future<Question?> getQuestionById(String questionId) async {
 
 Future<List<Evaluation>> getEvaluations() async {
   final uri = Uri.parse(
-    'https://mhod7qpeg0.execute-api.us-east-1.amazonaws.com/dev/evaluations',
+    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/evaluations',
   );
 
   final response = await http.get(uri);
@@ -103,7 +103,7 @@ Future<Evaluation> createEvaluation(
   List<String> questionIds,
 ) async {
   final uri = Uri.parse(
-    'https://mhod7qpeg0.execute-api.us-east-1.amazonaws.com/dev/evaluations',
+    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/evaluations',
   );
 
   final response = await http.post(
@@ -140,7 +140,7 @@ Future<Evaluation> createEvaluation(
 
 Future<List<EvaluationResult>> getEvaluationResults() async {
   final uri = Uri.parse(
-    'https://mhod7qpeg0.execute-api.us-east-1.amazonaws.com/dev/results',
+    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/results',
   );
 
   final response = await http.get(uri);
@@ -165,7 +165,7 @@ Future<EvaluationResult> createEvaluationResult(
   Map<String, List<int>> results,
 ) async {
   final uri = Uri.parse(
-    'https://mhod7qpeg0.execute-api.us-east-1.amazonaws.com/dev/results',
+    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/results',
   );
 
   final response = await http.post(
