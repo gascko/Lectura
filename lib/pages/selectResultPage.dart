@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lectura/api.dart';
 import 'package:lectura/objects.dart';
 import 'package:lectura/pages/evaluationResultPage.dart';
+import 'package:intl/intl.dart';
 
 class SelectResultPage extends StatefulWidget {
   const SelectResultPage({super.key});
@@ -51,7 +52,7 @@ class SelectResultPageState extends State<SelectResultPage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Text(
-                  "WÃ¤hle eine Auswertung aus, um sie anzusehen.",
+                  "Wähleeine Auswertung aus, um sie anzusehen.",
                   style: TextStyle(
                     fontSize: 15,
                     color: Theme.of(context).colorScheme.onSurface,
@@ -120,6 +121,7 @@ class SelectResultPageState extends State<SelectResultPage> {
                     child: ListTile(
                       trailing: const Icon(Icons.chevron_right),
                       title: Text(evaluation.name, softWrap: true),
+                      subtitle: Text(DateFormat('dd.MM.yyyy HH:mm').format(result.dateOfEvaluation),),
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(

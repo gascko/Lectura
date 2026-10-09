@@ -8,11 +8,12 @@ import 'package:intl/intl.dart';
 class EvaluationResultPage extends StatefulWidget {
   final EvaluationResult evaluationResult;
   final Evaluation evaluation;
-
+  final bool canSave;
   const EvaluationResultPage({
     super.key,
     required this.evaluation,
     required this.evaluationResult,
+    this.canSave = false,
   });
 
   @override
@@ -22,6 +23,24 @@ class EvaluationResultPage extends StatefulWidget {
 class EvaluationResultPageState extends State<EvaluationResultPage> {
   double averageRating = 0;
   int totalAnswers = 0;
+  bool isSaved = false;
+
+Future<void> saveResult() async {
+  await createEvaluationResult(
+    widget.evaluation.id,
+    widget.evaluationResult.results,
+  );
+
+  setState(() {
+    isSaved = true;
+  });
+
+  if (!mounted) return;
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text('Auswertung gespeichert')),
+  );
+}
 
   @override
   void initState() {
@@ -199,6 +218,14 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
                   ),
                 ),
               ),
+
+    Padding(
+  padding: const EdgeInsets.only(top: 20, bottom: 30),
+  child: FilledButton(
+    onPressed: isSaved ? null : saveResult,
+    child: Text(isSaved ? 'Gespeichert' : 'In Cloud speichern'),
+  ),
+),
             ],
           );
         },
