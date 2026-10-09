@@ -20,12 +20,22 @@ class EvaluationResult {
 
   EvaluationResult(this.evaluationId, this.dateOfEvaluation, this.results);
 
-  EvaluationResult.fromJson(Map<String, dynamic> json)
-    : evaluationId = json['askedQuestionId'] as String,
-      dateOfEvaluation = json['dateOfEvaluation'] as DateTime,
-      results = (json['results'] as Map<String, dynamic>)
-          .map((key, value) => MapEntry(key, List<int>.from(value)));
+//   EvaluationResult.fromJson(Map<String, dynamic> json)
+//     : evaluationId = json['askedQuestionId'] as String,
+//       dateOfEvaluation = json['dateOfEvaluation'] as DateTime,
+//       results = (json['results'] as Map<String, dynamic>)
+//           .map((key, value) => MapEntry(key, List<int>.from(value)));
+// }
+
+EvaluationResult.fromJson(Map<String, dynamic> json)
+  : evaluationId = json['evaluationId'] as String,
+    dateOfEvaluation = DateTime.parse(json['dateOfEvaluation'] as String),
+    results = (json['results'] as Map<String, dynamic>)
+        .map((key, value) => MapEntry(key, List<int>.from(value)));
+
 }
+
+
 
 class Question {
   final String id;

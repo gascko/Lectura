@@ -3,6 +3,7 @@ import 'package:lectura/pages/createEvaluationPage.dart';
 import 'variables.dart';
 import 'pages/settingsPage.dart';
 import 'pages/selectEvaluationPage.dart';
+import 'pages/selectResultPage.dart';
 
 class AppTheme {
   static const Color seed = Color(0xFF5850DF);
@@ -66,7 +67,7 @@ class LecturaAppState extends State<LecturaApp> {
     {
       'title': 'Auswertung',
       'subtitle': 'Alle Evaluationen ansehen und analysieren',
-      'page': SettingsPage(),
+      'page': SelectResultPage(),
       'icon': Icons.bar_chart,
     },
     {
