@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:lectura/objects.dart';
 import 'package:http/http.dart' as http;
 
+const String baseUrl = 'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev';
+
 // Future<List<Question>> getQuestions() async {
 //   final String response = await rootBundle.loadString(
 //     'assets/questionsInit.json',
@@ -15,17 +17,14 @@ import 'package:http/http.dart' as http;
 // }
 
 
+
 Future<List<Question>> getQuestions() async {
-  final uri = Uri.parse(
-    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/questions',
-  );
+  final uri = Uri.parse('$baseUrl/questions',);
   final response = await http.get(uri);
 
   if (response.statusCode != 200) {
     throw Exception(
-      'Fragen konnten nicht geladen werden. Status: ${response.statusCode}',
-    );
-  }
+      'Fragen konnten nicht geladen werden. Status: ${response.statusCode}', ); }
   final List<dynamic> jsonList = jsonDecode(response.body);
   final List<Question> questions = jsonList
       .map((item) => Question.fromJson(item as Map<String, dynamic>))
@@ -75,9 +74,7 @@ Future<Question?> getQuestionById(String questionId) async {
 
 
 Future<List<Evaluation>> getEvaluations() async {
-  final uri = Uri.parse(
-    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/evaluations',
-  );
+final uri = Uri.parse('$baseUrl/evaluations');
 
   final response = await http.get(uri);
 
@@ -102,9 +99,7 @@ Future<Evaluation> createEvaluation(
   String name,
   List<String> questionIds,
 ) async {
-  final uri = Uri.parse(
-    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/evaluations',
-  );
+ final uri = Uri.parse('$baseUrl/evaluations');
 
   final response = await http.post(
     uri,
@@ -139,9 +134,8 @@ Future<Evaluation> createEvaluation(
 // }
 
 Future<List<EvaluationResult>> getEvaluationResults() async {
-  final uri = Uri.parse(
-    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/results',
-  );
+
+  final uri = Uri.parse('$baseUrl/results');
 
   final response = await http.get(uri);
 
@@ -164,9 +158,8 @@ Future<EvaluationResult> createEvaluationResult(
   String evaluationId,
   Map<String, List<int>> results,
 ) async {
-  final uri = Uri.parse(
-    'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev/results',
-  );
+  
+  final uri = Uri.parse('$baseUrl/results');
 
   final response = await http.post(
     uri,
