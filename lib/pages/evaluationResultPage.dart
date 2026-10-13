@@ -4,6 +4,7 @@ import 'package:lectura/api.dart';
 import 'package:lectura/main.dart';
 import 'package:lectura/objects.dart';
 import 'package:intl/intl.dart';
+import 'package:lectura/variables.dart';
 
 class EvaluationResultPage extends StatefulWidget {
   final EvaluationResult evaluationResult;
@@ -47,6 +48,18 @@ Future<void> saveResult() async {
     super.initState();
     calculateTotalAnswers();
     calculateAverageRating();
+
+    errorNotifier.addListener(() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Ein Fehler ist aufgetreten."),
+        ),
+      );
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LecturaApp()),
+            (route) => false,
+      );
+    });
   }
 
   Future<List<Question>> loadEvaluationQuestions() async {

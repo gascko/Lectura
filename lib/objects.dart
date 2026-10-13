@@ -35,8 +35,6 @@ EvaluationResult.fromJson(Map<String, dynamic> json)
 
 }
 
-
-
 class Question {
   final String id;
   final String text;

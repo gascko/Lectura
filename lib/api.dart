@@ -1,9 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:lectura/objects.dart';
 import 'package:http/http.dart' as http;
-
-const String baseUrl = 'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/dev';
+import 'package:lectura/variables.dart';
 
 // Future<List<Question>> getQuestions() async {
 //   final String response = await rootBundle.loadString(
@@ -16,20 +16,35 @@ const String baseUrl = 'https://r7gfduecni.execute-api.us-east-1.amazonaws.com/d
 //   return questions;
 // }
 
+class ErrorNotifier with ChangeNotifier {
+  String errorMessage = "";
+  String get message => errorMessage;
 
+  void callError(String message) {
+    errorMessage = message;
+    notifyListeners();
+  }
+}
 
 Future<List<Question>> getQuestions() async {
-  final uri = Uri.parse('$baseUrl/questions',);
-  final response = await http.get(uri);
+  final uri = Uri.parse('$baseUrl/questions');
 
-  if (response.statusCode != 200) {
-    throw Exception(
-      'Fragen konnten nicht geladen werden. Status: ${response.statusCode}', ); }
-  final List<dynamic> jsonList = jsonDecode(response.body);
-  final List<Question> questions = jsonList
-      .map((item) => Question.fromJson(item as Map<String, dynamic>))
-      .toList();
+  List<Question> questions = [];
+  try {
+    final response = await http.get(uri).timeout(
+        Duration(seconds: timeoutDuration));
 
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Fragen konnten nicht geladen werden. Status: ${response.statusCode}',);
+    }
+    final List<dynamic> jsonList = jsonDecode(response.body);
+    questions = jsonList
+        .map((item) => Question.fromJson(item as Map<String, dynamic>))
+        .toList();
+  } catch (e) {
+    errorNotifier.callError(e.toString());
+  }
   return questions;
 }
 
@@ -76,20 +91,27 @@ Future<Question?> getQuestionById(String questionId) async {
 Future<List<Evaluation>> getEvaluations() async {
 final uri = Uri.parse('$baseUrl/evaluations');
 
-  final response = await http.get(uri);
+  List<Evaluation> evaluations = [];
+  try {
+    final response = await http.get(uri).timeout(
+        Duration(seconds: timeoutDuration));
+    ;
 
-  if (response.statusCode != 200) {
-    throw Exception(
-      'Evaluationen konnten nicht geladen werden. Status: ${response.statusCode}',
-    );
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Evaluationen konnten nicht geladen werden. Status: ${response
+            .statusCode}',
+      );
+    }
+
+    final List<dynamic> jsonList = jsonDecode(response.body);
+
+    evaluations = jsonList
+        .map((item) => Evaluation.fromJson(item as Map<String, dynamic>))
+        .toList();
+  } catch(e) {
+    errorNotifier.callError(e.toString());
   }
-
-  final List<dynamic> jsonList = jsonDecode(response.body);
-
-  final List<Evaluation> evaluations = jsonList
-      .map((item) => Evaluation.fromJson(item as Map<String, dynamic>))
-      .toList();
-
   return evaluations;
 }
 
@@ -136,17 +158,23 @@ Future<Evaluation> createEvaluation(
 Future<List<EvaluationResult>> getEvaluationResults() async {
 
   final uri = Uri.parse('$baseUrl/results');
+  List<dynamic> jsonList = [];
 
-  final response = await http.get(uri);
+  try {
+    final response = await http.get(uri).timeout(
+        Duration(seconds: timeoutDuration));
 
-  if (response.statusCode != 200) {
-    throw Exception(
-      'Auswertungen konnten nicht geladen werden. Status: ${response.statusCode}',
-    );
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Auswertungen konnten nicht geladen werden. Status: ${response
+            .statusCode}',
+      );
+    }
+
+    jsonList = jsonDecode(response.body);
+  } catch(e) {
+    errorNotifier.callError(e.toString());
   }
-
-  final List<dynamic> jsonList = jsonDecode(response.body);
-
   return jsonList
       .map((item) => EvaluationResult.fromJson(item as Map<String, dynamic>))
       .toList();

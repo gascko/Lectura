@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lectura/api.dart';
 import 'package:lectura/main.dart';
 import 'package:lectura/objects.dart';
+import 'package:lectura/variables.dart';
 import 'package:uuid/uuid.dart';
 import 'evaluationPage.dart';
 
@@ -20,6 +21,23 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
   var uuid = Uuid();
   String name = "";
   List<String> questionIds = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    errorNotifier.addListener(() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Ein Fehler ist aufgetreten."),
+        ),
+      );
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LecturaApp()),
+            (route) => false,
+      );
+    });
+  }
 
   Future<bool?> continueDialog() {
     return showDialog<bool>(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lectura/api.dart';
+import 'package:lectura/main.dart';
 import 'package:lectura/objects.dart';
 import 'package:lectura/pages/evaluationPage.dart';
+import 'package:lectura/variables.dart';
 
 class SelectEvaluationPage extends StatefulWidget {
   const SelectEvaluationPage({super.key});
@@ -14,6 +16,23 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
 
   List<Evaluation> targetEvaluations = [];
   bool search = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    errorNotifier.addListener(() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Ein Fehler ist aufgetreten."),
+        ),
+      );
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LecturaApp()),
+            (route) => false,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
