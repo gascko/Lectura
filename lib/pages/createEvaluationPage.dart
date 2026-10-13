@@ -30,6 +30,10 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Ein Fehler ist aufgetreten.")));
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LecturaApp()),
+            (route) => false,
+      );
     });
   }
 
