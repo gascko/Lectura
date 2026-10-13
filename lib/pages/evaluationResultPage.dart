@@ -52,7 +52,7 @@ Future<void> saveResult() async {
     errorNotifier.addListener(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Ein Fehler ist aufgetreten."),
+          content: Text("Ein Fehler ist aufgetreten. ${errorNotifier.errorMessage}"),
         ),
       );
       Navigator.of(context).pushAndRemoveUntil(
@@ -107,7 +107,7 @@ Future<void> saveResult() async {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const LecturaApp()),
@@ -153,7 +153,6 @@ Future<void> saveResult() async {
                   textAlign: TextAlign.center,
                 ),
               ),Card(
-                  color: Theme.of(context).colorScheme.onPrimary,
                   child: Padding(
                     padding: EdgeInsetsGeometry.all(10),
                     child: Column(
@@ -191,7 +190,6 @@ Future<void> saveResult() async {
                 (question) => Padding(
                   padding: const EdgeInsets.only(bottom: 4),
                   child: Card(
-                    color: Theme.of(context).colorScheme.onPrimary,
                     child: Padding(
                       padding: EdgeInsetsGeometry.all(10),
                       child: Column(

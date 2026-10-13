@@ -45,7 +45,7 @@ class EvaluationPageState extends State<EvaluationPage> {
         return AlertDialog(
           title: const Text('Umfrage beenden?'),
           content: const Text(
-            'Möchtest du die Umfrage beenden, ohne sie auszuwerten oder eine Auswertung erstellen?',
+            'Möchtest du die Umfrage wirklich beenden?',
           ),
           actions: <Widget>[
             TextButton(
@@ -61,19 +61,7 @@ class EvaluationPageState extends State<EvaluationPage> {
               style: TextButton.styleFrom(
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
-              child: const Text('Beenden ohne Auswertung'),
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const LecturaApp()),
-                  (route) => false,
-                );
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Beenden und Auswerten'),
+              child: const Text('Beenden'),
               onPressed: () {
                 EvaluationResult result = EvaluationResult(
                   widget.evaluation.id,
@@ -149,7 +137,6 @@ class EvaluationPageState extends State<EvaluationPage> {
                 ),
               ),
               Card(
-                color: Theme.of(context).colorScheme.onPrimary,
                 child: Padding(
                   padding: EdgeInsetsGeometry.all(10),
                   child: Column(
@@ -180,9 +167,6 @@ class EvaluationPageState extends State<EvaluationPage> {
                           children: List<Widget>.generate(5, (int index) {
                             return ChoiceChip(
                               showCheckmark: false,
-                              backgroundColor: Theme.of(
-                                context,
-                              ).colorScheme.onPrimary,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadiusGeometry.all(
                                   Radius.circular(100),

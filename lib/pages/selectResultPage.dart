@@ -24,7 +24,7 @@ class SelectResultPageState extends State<SelectResultPage> {
     errorNotifier.addListener(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Ein Fehler ist aufgetreten."),
+          content: Text("Ein Fehler ist aufgetreten. ${errorNotifier.errorMessage}"),
         ),
       );
       Navigator.of(context).pushAndRemoveUntil(

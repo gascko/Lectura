@@ -29,10 +29,10 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
     errorNotifier.addListener(() {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Ein Fehler ist aufgetreten.")));
+      ).showSnackBar(SnackBar(content: Text("Ein Fehler ist aufgetreten. ${errorNotifier.errorMessage}")));
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => LecturaApp()),
-            (route) => false,
+        (route) => false,
       );
     });
   }
@@ -105,64 +105,6 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
     );
   }
 
-  Future<bool?> exitDialog() {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Umfrage erstellen beenden'),
-          content: const Text('Willst du die Umfrage speichern?'),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Abbrechen'),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Beenden ohne zu Speichern'),
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => LecturaApp()),
-                  (route) => false,
-                );
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Umfrage speichern und beenden'),
-              onPressed: () async {
-                if (formularKey.currentState!.validate() &&
-                    questionIds.length >= numberOfQuestions) {
-                  await createEvaluation(name, questionIds);
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => const LecturaApp()),
-                    (route) => false,
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Alle Felder müssen ausgefüllt werden"),
-                    ),
-                  );
-                  Navigator.pop(context, false);
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,14 +113,36 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
           "Neue Evaluation erstellen",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        leading: IconButton(
-          onPressed: exitDialog,
-          icon: Icon(Icons.arrow_back),
-        ),
       ),
       persistentFooterButtons: [
         Row(
           children: [
+            Expanded(
+              child: ElevatedButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: const Text('Umfrage speichern und beenden'),
+                onPressed: () async {
+                  if (formularKey.currentState!.validate() &&
+                      questionIds.length >= numberOfQuestions) {
+                    await createEvaluation(name, questionIds);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const LecturaApp(),
+                      ),
+                      (route) => false,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Alle Felder müssen ausgefüllt werden"),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
