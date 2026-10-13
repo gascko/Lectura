@@ -27,15 +27,9 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
     super.initState();
 
     errorNotifier.addListener(() {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Ein Fehler ist aufgetreten."),
-        ),
-      );
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LecturaApp()),
-            (route) => false,
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Ein Fehler ist aufgetreten.")));
     });
   }
 
@@ -211,124 +205,101 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-          return Padding(
-            padding: EdgeInsetsGeometry.all(20),
-            child: Form(
-              key: formularKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsGeometry.directional(bottom: 20),
-                    child: Text(
-                      "Umfrage benennen",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+          return Form(
+            key: formularKey,
+            child: ListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                Padding(
+                  padding: EdgeInsetsGeometry.directional(bottom: 20),
+                  child: Text(
+                    "Umfrage benennen",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.directional(bottom: 20),
+                  child: Text(
+                    "Gib deiner Evaluation einen Namen, um sie später besser wiederzufinden.",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsGeometry.directional(bottom: 20),
-                    child: Text(
-                      "Gib deiner Evaluation einen Namen, um sie später besser wiederzufinden.",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.directional(bottom: 20),
+                  child: TextFormField(
+                    onChanged: (value) {
+                      name = value;
+                      formularKey.currentState!.validate();
+                    },
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "Bitte vergebe noch einen Namen für die Evaluation";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "z.B. Evaluation Vorlesung Datenbanken",
+                    ),
+                    maxLength: 30,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.directional(bottom: 20),
+                  child: Text(
+                    "Fragen auswählen",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.directional(bottom: 20),
+                  child: Text(
+                    "Wähle die Fragen aus, die in dieser Evaluation beantwortet werden sollen.",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsGeometry.directional(bottom: 20),
-                    child: TextFormField(
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "${questionIds.length}/${numberOfQuestions} ausgewählt",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: questionIds.length < numberOfQuestions
+                          ? Colors.red
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+                ...snapshot.data!.map((question) {
+                  return Card(
+                    child: CheckboxListTile(
+                      isError: questionIds.length < numberOfQuestions
+                          ? true
+                          : false,
+                      title: Text(question.text, softWrap: true),
+                      value: questionIds.contains(question.id),
                       onChanged: (value) {
-                        name = value;
-                        formularKey.currentState!.validate();
-                      },
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return "Bitte vergebe noch einen Namen für die Evaluation";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "z.B. Evaluation Vorlesung Datenbanken",
-                      ),
-                      maxLength: 30,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsGeometry.directional(bottom: 20),
-                    child: Text(
-                      "Fragen auswählen",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsGeometry.directional(bottom: 20),
-                    child: Text(
-                      "Wähle die Fragen aus, die in dieser Evaluation beantwortet werden sollen.",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "${questionIds.length}/${numberOfQuestions} ausgewählt",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: questionIds.length < numberOfQuestions
-                            ? Colors.red
-                            : Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      scrollDirection: Axis.vertical,
-                      itemCount: snapshot.data!.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 4),
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: CheckboxListTile(
-                            isError: questionIds.length < numberOfQuestions
-                                ? true
-                                : false,
-                            title: Text(
-                              snapshot.data![index].text,
-                              softWrap: true,
-                            ),
-                            value: questionIds.contains(
-                              snapshot.data![index].id,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                if (questionIds.contains(
-                                  snapshot.data![index].id,
-                                )) {
-                                  questionIds.remove(snapshot.data![index].id);
-                                } else {
-                                  if (questionIds.length < numberOfQuestions) {
-                                    questionIds.add(snapshot.data![index].id);
-                                  }
-                                }
-                              });
-                            },
-                          ),
-                        );
+                        setState(() {
+                          if (questionIds.contains(question.id)) {
+                            questionIds.remove(question.id);
+                          } else {
+                            if (questionIds.length < numberOfQuestions) {
+                              questionIds.add(question.id);
+                            }
+                          }
+                        });
                       },
                     ),
-                  ),
-                ],
-              ),
+                  );
+                }),
+              ],
             ),
           );
         },
