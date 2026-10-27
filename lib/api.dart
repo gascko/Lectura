@@ -133,7 +133,7 @@ Future<EvaluationResult> createEvaluationResult(
   final uri = Uri.parse('$baseUrl/results');
 
   try {
-    final response = await http.post(
+    response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'evaluationId': evaluationId, 'results': results}),
