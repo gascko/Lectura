@@ -10,6 +10,7 @@ class EvaluationResultPage extends StatefulWidget {
   final EvaluationResult evaluationResult;
   final Evaluation evaluation;
   final bool canSave;
+
   const EvaluationResultPage({
     super.key,
     required this.evaluation,
@@ -26,22 +27,22 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
   int totalAnswers = 0;
   bool isSaved = false;
 
-Future<void> saveResult() async {
-  await createEvaluationResult(
-    widget.evaluation.id,
-    widget.evaluationResult.results,
-  );
+  Future<void> saveResult() async {
+    await createEvaluationResult(
+      widget.evaluation.id,
+      widget.evaluationResult.results,
+    );
 
-  setState(() {
-    isSaved = true;
-  });
+    setState(() {
+      isSaved = true;
+    });
 
-  if (!mounted) return;
+    if (!mounted) return;
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(content: Text('Auswertung gespeichert')),
-  );
-}
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Auswertung gespeichert')));
+  }
 
   @override
   void initState() {
@@ -52,12 +53,14 @@ Future<void> saveResult() async {
     errorNotifier.addListener(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Ein Fehler ist aufgetreten. ${errorNotifier.errorMessage}"),
+          content: Text(
+            "Ein Fehler ist aufgetreten. ${errorNotifier.errorMessage}",
+          ),
         ),
       );
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => LecturaApp()),
-            (route) => false,
+        (route) => false,
       );
     });
   }
@@ -67,12 +70,13 @@ Future<void> saveResult() async {
 
     // widget.evaluationResult.results.forEach((key, values) async {
     //   Question? question = await getQuestionById(key);
-     for (final key in widget.evaluationResult.results.keys) {
-    Question? question = await getQuestionById(key);
+    for (final key in widget.evaluationResult.results.keys) {
+      Question? question = await getQuestionById(key);
       if (question != null) {
         questions.add(question);
       }
-    };
+    }
+    ;
     return questions;
   }
 
@@ -152,40 +156,41 @@ Future<void> saveResult() async {
                   ),
                   textAlign: TextAlign.center,
                 ),
-              ),Card(
-                  child: Padding(
-                    padding: EdgeInsetsGeometry.all(10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Gesamtbewertung",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
+              ),
+              Card(
+                child: Padding(
+                  padding: EdgeInsetsGeometry.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Gesamtbewertung",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
-                        if (totalAnswers > 0)
-                          Padding(
-                            padding: EdgeInsetsGeometry.all(10),
-                            child: Text(
-                              "${averageRating.toStringAsFixed(2)} / 5",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                              ),
+                      ),
+                      if (totalAnswers > 0)
+                        Padding(
+                          padding: EdgeInsetsGeometry.all(10),
+                          child: Text(
+                            "${averageRating.toStringAsFixed(2)} / 5",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
                             ),
                           ),
-                        if (totalAnswers > 0)
-                          StarRating(
-                            allowHalfRating: true,
-                            rating: averageRating,
-                          ),
-                        Text("${totalAnswers} Antworten"),
-                      ],
-                    ),
+                        ),
+                      if (totalAnswers > 0)
+                        StarRating(
+                          allowHalfRating: true,
+                          rating: averageRating,
+                        ),
+                      Text("${totalAnswers} Antworten"),
+                    ],
                   ),
                 ),
+              ),
               ...snapshot.data!.map(
                 (question) => Padding(
                   padding: const EdgeInsets.only(bottom: 4),
@@ -194,8 +199,9 @@ Future<void> saveResult() async {
                       padding: EdgeInsetsGeometry.all(10),
                       child: Column(
                         children: [
-                          Padding(padding: EdgeInsetsGeometry.all(10), child:
-                          Text(question.text),
+                          Padding(
+                            padding: EdgeInsetsGeometry.all(10),
+                            child: Text(question.text),
                           ),
                           Padding(
                             padding: EdgeInsetsGeometry.directional(bottom: 10),
@@ -230,13 +236,14 @@ Future<void> saveResult() async {
                 ),
               ),
 
-    Padding(
-  padding: const EdgeInsets.only(top: 20, bottom: 30),
-  child: FilledButton(
-    onPressed: isSaved ? null : saveResult,
-    child: Text(isSaved ? 'Gespeichert' : 'In Cloud speichern'),
-  ),
-),
+              if (widget.canSave)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 30),
+                  child: FilledButton(
+                    onPressed: isSaved ? null : saveResult,
+                    child: Text(isSaved ? 'Gespeichert' : 'In Cloud speichern'),
+                  ),
+                ),
             ],
           );
         },

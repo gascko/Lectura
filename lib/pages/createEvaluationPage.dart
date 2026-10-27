@@ -27,82 +27,18 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
     super.initState();
 
     errorNotifier.addListener(() {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Ein Fehler ist aufgetreten. ${errorNotifier.errorMessage}")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Ein Fehler ist aufgetreten. ${errorNotifier.errorMessage}",
+          ),
+        ),
+      );
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => LecturaApp()),
         (route) => false,
       );
     });
-  }
-
-  Future<bool?> continueDialog() {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Umfrage starten'),
-          content: const Text('Möchtest du die Umfrage speichern und starten?'),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Abbrechen'),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Umfrage ohne zu Speichern starten'),
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => EvaluationPage(
-                      evaluation: Evaluation(
-                        uuid.v4(),
-                        name,
-                        DateTime.now(),
-                        questionIds,
-                      ),
-                    ),
-                  ),
-                  (route) => false,
-                );
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Umfrage speichern und starten'),
-              onPressed: () {
-                setState(() async {
-                  await createEvaluation(name, questionIds);
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => EvaluationPage(
-                        evaluation: Evaluation(
-                          uuid.v4(),
-                          name,
-                          DateTime.now(),
-                          questionIds,
-                        ),
-                      ),
-                    ),
-                    (route) => false,
-                  );
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -119,9 +55,6 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
           children: [
             Expanded(
               child: ElevatedButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
                 child: const Text('Umfrage speichern und beenden'),
                 onPressed: () async {
                   if (formularKey.currentState!.validate() &&
@@ -141,27 +74,6 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
                     );
                   }
                 },
-              ),
-            ),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  if (formularKey.currentState!.validate() &&
-                      questionIds.length >= numberOfQuestions) {
-                    continueDialog();
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Alle Felder müssen ausgefüllt werden"),
-                      ),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                ),
-                child: Text("Evaluation starten"),
               ),
             ),
           ],

@@ -73,6 +73,7 @@ class EvaluationPageState extends State<EvaluationPage> {
                     builder: (context) => EvaluationResultPage(
                       evaluation: widget.evaluation,
                       evaluationResult: result,
+                      canSave: true,
                     ),
                   ),
                   (route) => false,
