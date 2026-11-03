@@ -1,3 +1,150 @@
+03.09.2026
+## Konzept mockup erstellen
+Wir brauchen ein Mockup/Pretotyp bilder. Wie die app aussehen soll, wenn es fertig ist:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+kannst du das erste bild mir einzeln geben? wo prof modus ist die erste seite:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+mach diese tabs unten weg. und "professor-modus aktiv" weg. wie es bei diesem bild ist. behalte alles:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+mach das einstellung icon oben rechts weg. Brauchen es nicht doppelt:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+gib mir die bilder/screens für "2. Evaluation erstellen - Thema & Fragen " einzeln:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+okay. Mach 3. Vorschau weg. Haben dann nur 1. Thema und 2.Fragen. Wenn man zufällig auswählt, werden wie da schon steht zufällige fragen gewählt aus dem Pool. Wenn man auf Manuell auswählen drückt, kommt man zu der Liste auf dem 3 screenshot mit den fragen. Und je nach dem was man als maximum ausgewählt hat (2,3,4,5), kann man auch nur so viele fragen manuell auswählen.:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+okay. Sehr gut. Bearbeite nur noch das Hinweis, ändere das text zu "Bei manueller Auswahl ist die ausgewähle Anzahl (oben) an Fragen das Maximum" oder so in der richtung, nicht das es genau 3 fragen max sind, da es sich ja varieirt je nach dem was man als anzahl der fragen wählt. Und mach diesen Info-icon bei "Zufällig aus dem Pool" weg:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+mach das als Handy-Form und nicht Tablet-Form. am sonsten ist es perfek:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+Setze das Seitenverhältnis auf 1:1:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+okay jetzt wenn man bei punkt 2 fragen auf weiter drückt. soll die umfrage starten. Mach ein bild dafür:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+ne die umfrage wird ja auf seinem handy/tablet/gerät gemacht. Was weiter gegeben wird. Wenn man auf weiter drückt, kommt erstmal das man die umfrage startet oder so was. Oder starten kann. Wie das erste bild da. mach dafür ein bild:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+lass da nur das bild von den menschen, start knopf und text "bitte start drüken wenn du bereit bist" Das Hinweis machst du weg, diese sachen mit Teilnehmende, antwort und fragen machst du auch weg. Und diesen schloss icon mach auch weg:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+okay jetzt die 3 screenshots für die fragen:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+oben rechts mach so eine schloss form auch, wo der prof später die umfrage beenden kann.:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+okay jetzt das letze bild wo die umfrage zu ende ist.:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+okay jetzt wenn die umfrage zu ende ist, der professor die beendet hat. Die bilder/pretotyp wo er dann statistik anschauen kann. Weiß nicht wie am besten man es macht:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+mach es minimalistischer:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+wir brauchen hier ja irgendwie button für die nächste frage. das man weiter kommt:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+okay. ist jetzt alles fertig. bleiben nur noch die seiten für Fragen und themen. mach dafür einzelne bilder. Erstmal die themen übersicht:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+mach noch die überschrift oben "vortrag/präsentation" zu "Fragen" und mach die anzahl der fragen oben links weg:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+mach noch links bei fragen dieses ding weg, wo man anscheinend dann später die fragen- reihenfolge verschieben kann:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+okay bei diesem bild mach diesen tab mit letzte evaluierung weg. brauchen wir nicht:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+zu viele einstellungen. Lass da erstmal nur auswahl schwarz oder hell modus:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+und jetzt den letzen tab für ergebnisse:
+
+Antwort: Das Bild wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+06.09.2026
+
+kannst du mir ein icon für die app erstellen? Lectura, was  interessantes und ansprechendes. soll aber nicht wie ki sloop aussehen:
+
+Antwort: Das Icon wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+ soll wie von einem design menschen aussehen der sich gedanken gemacht hat:
+
+Antwort: Das Icon wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+
+ja sieht gut aus, aber dieses Lila bei dem kleinen kästchen mit 3 balken drinne, mach das nicht lila sondern diese farbe 0xFF5850DF:
+
+Antwort: Das Icon wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+lass nur den weißen hintergrund, mach das rund und nicht eckig und mach diesen schwarzen quadrat rund um das weiße mach das komplett weg:
+
+Antwort: Das Icon wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+kannst du das logo/symbol größer machen?:
+
+Antwort: Das Icon wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
+kannst du den Hintergrund transparent machen? das man nur das Symbol hat:
+
+Antwort: Das Icon wurde entsprechend der Anfrage erstellt bzw. angepasst. Das Ergebnis ist in mockup.drawio zu finden.
+
 # Prompt
 
 > Datum: 16.09.2026
@@ -1117,4 +1264,184 @@ _timer = Timer.periodic(
 
 
 Für deine Finish-Seite würde ich Variante 2 nehmen. Sie passt besonders gut zu deinem bisherigen Ziel, dass Lectura auch beim Verkleinern des Browserfensters keine Layout-Overflows bekommt.
+
+
+Datum: 03.11.2026
+
+kannst du mir grob die kommentrare in allen codes machen? nur das wichtigste und klar erklärt warum und wozu. lösche aber nicht aktuelle kommentare!wenn schon was kommentiert ist, kommentiere da nichts. und kannst bei wichtigen stellen ergänzen wie die einzelne codes zusammen setzen/arbeiten/funktionieren
+
+erstell bei api.dart und storage.dart doxygen kommentare:
+
+
+// Meldet API-Fehler über den gemeinsamen errorNotifier an die angemeldeten Seiten.
+/// @brief Stellt API-Fehlermeldungen für die Oberfläche bereit.
+
+/// @brief Liest die zuletzt gemeldete Fehlermeldung.
+/// @return Fehlermeldung oder ein leerer String vor dem ersten Fehler.
+
+/// @brief Speichert einen Fehler und benachrichtigt die registrierten Listener.
+/// @param message Anzuzeigende Fehlermeldung.
+
+// Lädt den Fragenkatalog; die Seiten verwenden Question-Objekte statt roher JSON-Daten.
+/// @brief Ruft den Fragenkatalog über GET /questions ab.
+/// @return Future mit den Fragen; bei einem abgefangenen Fehler eine leere Liste.
+/// @note Fehler werden über errorNotifier gemeldet.
+
+// Begrenzt die Wartezeit, damit eine ausbleibende Antwort als Fehler gemeldet wird.
+
+// Löst eine Fragen-ID in den Fragetext auf; lädt dafür den ganzen Katalog.
+/// @brief Sucht eine Frage im über getQuestions geladenen Katalog.
+/// @param questionId ID der gesuchten Frage.
+/// @return Future mit der Frage oder null, wenn sie nicht gefunden wurde.
+
+// Liefert Vorlagen für die Startauswahl und die Zuordnung gespeicherter Ergebnisse.
+/// @brief Ruft die Umfragevorlagen über GET /evaluations ab.
+/// @return Future mit den Vorlagen; bei einem abgefangenen Fehler eine leere Liste.
+/// @note Fehler werden über errorNotifier gemeldet.
+
+// Speichert Name und Fragen-IDs als Vorlage; Antworten werden getrennt gespeichert.
+/// @brief Erstellt eine Umfragevorlage über POST /evaluations.
+/// @param name Name der neuen Vorlage.
+/// @param questionIds IDs der ausgewählten Fragen in ihrer Reihenfolge.
+/// @return Future mit der vom Server zurückgegebenen Vorlage.
+/// @note API-Fehler werden gemeldet; eine fehlende oder ungültige Vorlage
+/// kann anschließend beim Umwandeln der Antwort einen Fehler auslösen.
+
+// Lädt gespeicherte Antwortsammlungen für die Übersicht der Auswertungen.
+/// @brief Ruft gespeicherte Auswertungen über GET /results ab.
+/// @return Future mit den Auswertungen; bei abgefangenen Anfrage- oder JSON-Fehlern leer.
+/// @note Fehler beim Umwandeln einzelner Einträge werden an den Aufrufer weitergegeben.
+
+// Verknüpft Antworten über evaluationId mit ihrer Vorlage und sendet sie als JSON.
+/// @brief Speichert eine Antwortsammlung über POST /results.
+/// @param evaluationId ID der zugehörigen Umfragevorlage.
+/// @param results Fragen-IDs mit den zugehörigen Bewertungen von 1 bis 5.
+/// @return Future mit der vom Server zurückgegebenen Auswertung.
+/// @note API-Fehler werden gemeldet; das anschließende Auswerten einer leeren
+/// oder ungültigen Serverantwort kann einen weiteren Fehler auslösen.
+
+
+// Verbindet die lokal gespeicherte Theme-Auswahl mit dem ListenableBuilder in main.dart.
+/// @brief Verwaltet das App-Theme und dessen Speicherung in SharedPreferences.
+
+/// @brief Liefert die aktuelle Theme-Auswahl für die Oberfläche.
+/// @return Helles, dunkles oder systemabhängiges Theme.
+
+/// @brief Kodiert die Theme-Auswahl für den lokalen Speicher.
+/// @param mode Zu speichernde Theme-Auswahl.
+/// @return 1 für hell, 2 für dunkel und 0 für die Systemeinstellung.
+
+/// @brief Wandelt den gespeicherten Zahlenwert in eine Theme-Auswahl um.
+/// @param themeValue Aus SharedPreferences gelesener Wert.
+/// @return Hell bei 1, dunkel bei 2, sonst die Systemeinstellung.
+
+/// @brief Lädt die Theme-Auswahl und benachrichtigt die Oberfläche.
+/// @return Future, das nach dem Laden und Benachrichtigen abgeschlossen ist.
+/// @note Ohne gespeicherten Wert wird die Systemeinstellung verwendet.
+
+/// @brief Speichert die Theme-Auswahl und benachrichtigt danach die Oberfläche.
+/// @param mode Neue Theme-Auswahl für die App.
+/// @return Future, das nach dem Speichern und Benachrichtigen abgeschlossen ist.
+
+// Gemeinsame Serveradresse und maximale Wartezeit der GET-Anfragen in Sekunden.
+
+// Alle Seiten teilen diese Instanzen, damit Theme-Wechsel und Fehler weitergegeben werden.
+
+
+// Umfragevorlage: questionIds verweisen auf Question-Objekte im Fragenkatalog.
+
+// Übersetzt API-Daten in Dart-Typen, insbesondere das Datum und die ID-Liste.
+
+// Antworten eines Durchlaufs: evaluationId verbindet sie mit der Umfragevorlage.
+
+// Pro Fragen-ID werden die Bewertungen (1 bis 5) der Teilnehmenden gesammelt.
+
+// Die ID verbindet den Fragetext mit Vorlagen und Antworten, auch über die API hinweg.
+
+
+// Zentrale Farbgestaltung, damit alle Seiten dasselbe helle bzw. dunkle Theme verwenden.
+
+// Initialisiert Flutter vor dem Speicherzugriff und lädt das Theme vor der ersten Anzeige.
+
+// Änderungen aus den Einstellungen bauen MaterialApp mit dem gewählten Theme neu auf.
+
+// Jede Verwaltungsaktion verbindet Beschriftung und Symbol mit ihrer Zielseite.
+
+// Wiederverwendbare Menükarte: öffnet beim Antippen die übergebene Seite.
+
+
+
+// Die Vorlage speichert nur IDs; die Fragetexte kommen aus dem API-Fragenkatalog.
+
+// API-Fehler werden hier angezeigt; danach führt die Navigation zurück zum Hauptmenü.
+
+// Erst einen gültigen Namen und die benötigte Fragenauswahl speichern.
+
+// Verbindet das asynchrone Laden des Fragenkatalogs mit der Formularanzeige.
+
+// Begrenzt die Auswahl auf die vorgesehene Anzahl an Fragen.
+
+
+// Sammelt pro Fragen-ID die Antworten aller Personen bis zum Beenden der Umfrage.
+
+// Das Future bleibt erhalten, damit eine Antwortauswahl die Fragen nicht erneut lädt.
+
+// Warnton und Rückfrage schützen vor versehentlichem Beenden während der Befragung.
+
+// Übergibt die gesammelten Antworten zur Auswertung; gespeichert wird dort.
+
+// Auch die System-Zurück-Aktion soll zuerst den Beenden-Dialog öffnen.
+
+// Die Vorlage legt die Reihenfolge fest; der Katalog liefert den Text.
+
+// Emoji-Index 0 bis 4 wird als Bewertung 1 bis 5 abgelegt.
+
+// Die Dankeseite liegt über dieser Seite; Antworten bleiben erhalten.
+// Nach der Rückkehr beginnt die nächste Person wieder bei Frage 1.
+
+
+// Nur frisch beendete Umfragen bieten Speichern an; geladene Ergebnisse sind bereits gespeichert.
+
+// Überträgt die Antwortsammlung an die API und deaktiviert danach den Speicherknopf.
+
+// Die Gesamtzahl wird zuerst benötigt, weil sie der Teiler für den Durchschnitt ist.
+
+// Zeigt die vom gemeinsamen API-Notifier gemeldeten Fehler auf dieser Seite an.
+
+// Gewichtet jede einzelne Antwort gleich; ohne Antworten bleibt die Bewertung bei 0.
+
+// Zählt einzelne Bewertungen über alle Fragen, nicht die Anzahl der Teilnehmenden.
+
+// Nutzt nur die Antworten der jeweiligen Frage für deren Zahlen- und Sterneanzeige.
+
+
+// Verbindet API-Fehler mit einer Meldung und der Rückkehr zum Hauptmenü.
+
+// Zeigt die gespeicherten Vorlagen an, sobald die API-Anfrage abgeschlossen ist.
+
+// Nur ohne aktive Suche die gesamte Liste übernehmen, sonst die Treffer behalten.
+
+// Übergibt die gewählte Vorlage; alte Seiten werden aus dem Verlauf entfernt.
+
+
+// Verbindet API-Fehler mit einer Meldung und der Rückkehr zum Hauptmenü.
+
+// Lädt beides parallel: Ergebnisse enthalten nur die ID, Vorlagen liefern den Namen.
+
+// Eine aktive Suche soll beim Neuaufbau der Anzeige ihre Treffer behalten.
+
+// Über die Vorlagen-ID kann nach dem Umfragenamen gesucht werden.
+
+// Ohne passende Vorlage fehlen Name und Umfragedaten für die Detailseite.
+
+// Nach der Übergabepause wird diese Seite geschlossen; darunter wartet die Umfrage.
+
+// Verhindert weitere Timer-Aufrufe, wenn die Seite nicht mehr angezeigt wird.
+
+// Füllt die sichtbare Höhe zum Zentrieren; bei Platzmangel bleibt die Liste scrollbar.
+
+
+
+
+
 ````
