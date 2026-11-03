@@ -6,11 +6,16 @@ import 'package:http/http.dart' as http;
 import 'package:lectura/variables.dart';
 
 // Meldet API-Fehler über den gemeinsamen errorNotifier an die angemeldeten Seiten.
+/// @brief Stellt API-Fehlermeldungen für die Oberfläche bereit.
 class ErrorNotifier with ChangeNotifier {
   String errorMessage = "";
 
+  /// @brief Liest die zuletzt gemeldete Fehlermeldung.
+  /// @return Fehlermeldung oder ein leerer String vor dem ersten Fehler.
   String get message => errorMessage;
 
+  /// @brief Speichert einen Fehler und benachrichtigt die registrierten Listener.
+  /// @param message Anzuzeigende Fehlermeldung.
   void callError(String message) {
     errorMessage = message;
     notifyListeners();
@@ -18,6 +23,9 @@ class ErrorNotifier with ChangeNotifier {
 }
 
 // Lädt den Fragenkatalog; die Seiten verwenden Question-Objekte statt roher JSON-Daten.
+/// @brief Ruft den Fragenkatalog über GET /questions ab.
+/// @return Future mit den Fragen; bei einem abgefangenen Fehler eine leere Liste.
+/// @note Fehler werden über errorNotifier gemeldet.
 Future<List<Question>> getQuestions() async {
   final uri = Uri.parse('$baseUrl/questions');
 
@@ -42,6 +50,9 @@ Future<List<Question>> getQuestions() async {
 }
 
 // Löst eine Fragen-ID in den Fragetext auf; lädt dafür den ganzen Katalog.
+/// @brief Sucht eine Frage im über getQuestions geladenen Katalog.
+/// @param questionId ID der gesuchten Frage.
+/// @return Future mit der Frage oder null, wenn sie nicht gefunden wurde.
 Future<Question?> getQuestionById(String questionId) async {
   final questions = await getQuestions();
 
@@ -55,6 +66,9 @@ Future<Question?> getQuestionById(String questionId) async {
 }
 
 // Liefert Vorlagen für die Startauswahl und die Zuordnung gespeicherter Ergebnisse.
+/// @brief Ruft die Umfragevorlagen über GET /evaluations ab.
+/// @return Future mit den Vorlagen; bei einem abgefangenen Fehler eine leere Liste.
+/// @note Fehler werden über errorNotifier gemeldet.
 Future<List<Evaluation>> getEvaluations() async {
 final uri = Uri.parse('$baseUrl/evaluations');
 
@@ -83,6 +97,12 @@ final uri = Uri.parse('$baseUrl/evaluations');
 }
 
 // Speichert Name und Fragen-IDs als Vorlage; Antworten werden getrennt gespeichert.
+/// @brief Erstellt eine Umfragevorlage über POST /evaluations.
+/// @param name Name der neuen Vorlage.
+/// @param questionIds IDs der ausgewählten Fragen in ihrer Reihenfolge.
+/// @return Future mit der vom Server zurückgegebenen Vorlage.
+/// @note API-Fehler werden gemeldet; eine fehlende oder ungültige Vorlage
+/// kann anschließend beim Umwandeln der Antwort einen Fehler auslösen.
 Future<Evaluation> createEvaluation(
   String name,
   List<String> questionIds,
@@ -108,6 +128,9 @@ Future<Evaluation> createEvaluation(
 }
 
 // Lädt gespeicherte Antwortsammlungen für die Übersicht der Auswertungen.
+/// @brief Ruft gespeicherte Auswertungen über GET /results ab.
+/// @return Future mit den Auswertungen; bei abgefangenen Anfrage- oder JSON-Fehlern leer.
+/// @note Fehler beim Umwandeln einzelner Einträge werden an den Aufrufer weitergegeben.
 Future<List<EvaluationResult>> getEvaluationResults() async {
   final uri = Uri.parse('$baseUrl/results');
   List<dynamic> jsonList = [];
@@ -133,6 +156,12 @@ Future<List<EvaluationResult>> getEvaluationResults() async {
 }
 
 // Verknüpft Antworten über evaluationId mit ihrer Vorlage und sendet sie als JSON.
+/// @brief Speichert eine Antwortsammlung über POST /results.
+/// @param evaluationId ID der zugehörigen Umfragevorlage.
+/// @param results Fragen-IDs mit den zugehörigen Bewertungen von 1 bis 5.
+/// @return Future mit der vom Server zurückgegebenen Auswertung.
+/// @note API-Fehler werden gemeldet; das anschließende Auswerten einer leeren
+/// oder ungültigen Serverantwort kann einen weiteren Fehler auslösen.
 Future<EvaluationResult> createEvaluationResult(
   String evaluationId,
   Map<String, List<int>> results,
