@@ -20,12 +20,14 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
   final formularKey = GlobalKey<FormState>();
   var uuid = Uuid();
   String name = "";
+  // Die Vorlage speichert nur IDs; die Fragetexte kommen aus dem API-Fragenkatalog.
   List<String> questionIds = [];
 
   @override
   void initState() {
     super.initState();
 
+    // API-Fehler werden hier angezeigt; danach führt die Navigation zurück zum Hauptmenü.
     errorNotifier.addListener(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -57,6 +59,7 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
               child: ElevatedButton(
                 child: const Text('Umfrage speichern und beenden'),
                 onPressed: () async {
+                  // Erst einen gültigen Namen und die benötigte Fragenauswahl speichern.
                   if (formularKey.currentState!.validate() &&
                       questionIds.length >= numberOfQuestions) {
                     await createEvaluation(name, questionIds);
@@ -79,6 +82,7 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
           ],
         ),
       ],
+      // Verbindet das asynchrone Laden des Fragenkatalogs mit der Formularanzeige.
       body: FutureBuilder<List<Question>>(
         future: getQuestions(),
         builder: (context, snapshot) {
@@ -170,6 +174,7 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
                           if (questionIds.contains(question.id)) {
                             questionIds.remove(question.id);
                           } else {
+                            // Begrenzt die Auswahl auf die vorgesehene Anzahl an Fragen.
                             if (questionIds.length < numberOfQuestions) {
                               questionIds.add(question.id);
                             }

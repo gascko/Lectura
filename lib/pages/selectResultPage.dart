@@ -21,6 +21,7 @@ class SelectResultPageState extends State<SelectResultPage> {
   void initState() {
     super.initState();
 
+    // Verbindet API-Fehler mit einer Meldung und der Rückkehr zum Hauptmenü.
     errorNotifier.addListener(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -44,6 +45,7 @@ class SelectResultPageState extends State<SelectResultPage> {
         ),
       ),
       body: FutureBuilder<List<dynamic>>(
+        // Lädt beides parallel: Ergebnisse enthalten nur die ID, Vorlagen liefern den Namen.
         future: Future.wait<dynamic>([getEvaluationResults(), getEvaluations()]),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -53,6 +55,7 @@ class SelectResultPageState extends State<SelectResultPage> {
           final evaluationResults = snapshot.data![0] as List<EvaluationResult>;
           final evaluations = snapshot.data![1] as List<Evaluation>;
 
+          // Eine aktive Suche soll beim Neuaufbau der Anzeige ihre Treffer behalten.
           if (!search) {
             targetResults = evaluationResults.toList();
           }
@@ -100,6 +103,7 @@ class SelectResultPageState extends State<SelectResultPage> {
                         targetResults = evaluationResults
                             .where(
                               (result) {
+                                // Über die Vorlagen-ID kann nach dem Umfragenamen gesucht werden.
                                 final matchingEvaluations = evaluations.where(
                                   (evaluation) =>
                                       evaluation.id == result.evaluationId,
@@ -128,6 +132,7 @@ class SelectResultPageState extends State<SelectResultPage> {
                   (evaluation) => evaluation.id == result.evaluationId,
                 );
 
+                // Ohne passende Vorlage fehlen Name und Umfragedaten für die Detailseite.
                 if (matchingEvaluations.isEmpty) {
                   return const SizedBox.shrink();
                 }

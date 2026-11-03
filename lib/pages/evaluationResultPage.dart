@@ -9,6 +9,7 @@ import 'package:lectura/variables.dart';
 class EvaluationResultPage extends StatefulWidget {
   final EvaluationResult evaluationResult;
   final Evaluation evaluation;
+  // Nur frisch beendete Umfragen bieten Speichern an; geladene Ergebnisse sind bereits gespeichert.
   final bool canSave;
 
   const EvaluationResultPage({
@@ -27,6 +28,7 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
   int totalAnswers = 0;
   bool isSaved = false;
 
+  // Überträgt die Antwortsammlung an die API und deaktiviert danach den Speicherknopf.
   Future<void> saveResult() async {
     await createEvaluationResult(
       widget.evaluation.id,
@@ -47,9 +49,11 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
   @override
   void initState() {
     super.initState();
+    // Die Gesamtzahl wird zuerst benötigt, weil sie der Teiler für den Durchschnitt ist.
     calculateTotalAnswers();
     calculateAverageRating();
 
+    // Zeigt die vom gemeinsamen API-Notifier gemeldeten Fehler auf dieser Seite an.
     errorNotifier.addListener(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -80,6 +84,7 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
     return questions;
   }
 
+  // Gewichtet jede einzelne Antwort gleich; ohne Antworten bleibt die Bewertung bei 0.
   void calculateAverageRating() {
     if (totalAnswers > 0) {
       widget.evaluationResult.results.forEach((key, values) {
@@ -91,12 +96,14 @@ class EvaluationResultPageState extends State<EvaluationResultPage> {
     }
   }
 
+  // Zählt einzelne Bewertungen über alle Fragen, nicht die Anzahl der Teilnehmenden.
   void calculateTotalAnswers() {
     widget.evaluationResult.results.forEach((key, values) {
       totalAnswers += values.length;
     });
   }
 
+  // Nutzt nur die Antworten der jeweiligen Frage für deren Zahlen- und Sterneanzeige.
   double calculateAverageRatingForQuestion(String questionId) {
     double average = 0.0;
 

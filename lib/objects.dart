@@ -1,3 +1,4 @@
+// Umfragevorlage: questionIds verweisen auf Question-Objekte im Fragenkatalog.
 class Evaluation {
   final String id;
   final String name;
@@ -6,6 +7,7 @@ class Evaluation {
 
   Evaluation(this.id, this.name, this.creationDate, this.questionIds);
 
+  // Übersetzt API-Daten in Dart-Typen, insbesondere das Datum und die ID-Liste.
   Evaluation.fromJson(Map<String, dynamic> json)
     : id = json['id'] as String,
       name = json['name'] as String,
@@ -13,9 +15,11 @@ class Evaluation {
       questionIds = List<String>.from(json['questionIds']);
 }
 
+// Antworten eines Durchlaufs: evaluationId verbindet sie mit der Umfragevorlage.
 class EvaluationResult {
   final String evaluationId;
   final DateTime dateOfEvaluation;
+  // Pro Fragen-ID werden die Bewertungen (1 bis 5) der Teilnehmenden gesammelt.
   final Map<String, List<int>> results;
 
   EvaluationResult(this.evaluationId, this.dateOfEvaluation, this.results);
@@ -35,6 +39,7 @@ EvaluationResult.fromJson(Map<String, dynamic> json)
 
 }
 
+// Die ID verbindet den Fragetext mit Vorlagen und Antworten, auch über die API hinweg.
 class Question {
   final String id;
   final String text;

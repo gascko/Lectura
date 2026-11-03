@@ -21,6 +21,7 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
   void initState() {
     super.initState();
 
+    // Verbindet API-Fehler mit einer Meldung und der Rückkehr zum Hauptmenü.
     errorNotifier.addListener(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -43,12 +44,14 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
+      // Zeigt die gespeicherten Vorlagen an, sobald die API-Anfrage abgeschlossen ist.
       body: FutureBuilder<List<Evaluation>>(
         future: getEvaluations(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
+          // Nur ohne aktive Suche die gesamte Liste übernehmen, sonst die Treffer behalten.
           if (!search) {
             targetEvaluations = snapshot.data!.toList();
           }
@@ -112,6 +115,7 @@ class SelectEvaluationPageState extends State<SelectEvaluationPage> {
                       trailing: const Icon(Icons.chevron_right),
                       title: Text(evaluation.name, softWrap: true),
                       onTap: () {
+                        // Übergibt die gewählte Vorlage; alte Seiten werden aus dem Verlauf entfernt.
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) => EvaluationPage(

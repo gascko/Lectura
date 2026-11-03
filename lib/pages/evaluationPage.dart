@@ -21,12 +21,14 @@ class EvaluationPageState extends State<EvaluationPage> {
   int? selectedValue;
   int currentQuestion = 1;
   List<String> emojis = ["🤯", "😕", "🫤", "😊", "🤩"];
+  // Sammelt pro Fragen-ID die Antworten aller Personen bis zum Beenden der Umfrage.
   Map<String, List<int>> results = {};
   late Future<List<Question>> questionsFuture;
 
   @override
   void initState() {
     super.initState();
+    // Das Future bleibt erhalten, damit eine Antwortauswahl die Fragen nicht erneut lädt.
     questionsFuture = getQuestions();
   }
 
@@ -37,6 +39,7 @@ class EvaluationPageState extends State<EvaluationPage> {
     await player.play();
   }
 
+  // Warnton und Rückfrage schützen vor versehentlichem Beenden während der Befragung.
   Future<bool?> exitDialog() {
     playWarningSound();
     return showDialog<bool>(
@@ -63,6 +66,7 @@ class EvaluationPageState extends State<EvaluationPage> {
               ),
               child: const Text('Beenden'),
               onPressed: () {
+                // Übergibt die gesammelten Antworten zur Auswertung; gespeichert wird dort.
                 EvaluationResult result = EvaluationResult(
                   widget.evaluation.id,
                   DateTime.now(),
@@ -95,6 +99,7 @@ class EvaluationPageState extends State<EvaluationPage> {
         actions: [
           Padding(
             padding: EdgeInsetsGeometry.all(10),
+            // Auch die System-Zurück-Aktion soll zuerst den Beenden-Dialog öffnen.
             child: PopScope<Object?>(
               canPop: false,
               onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -145,6 +150,7 @@ class EvaluationPageState extends State<EvaluationPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
+                        // Die Vorlage legt die Reihenfolge fest; der Katalog liefert den Text.
                         snapshot.data!
                             .where(
                               (question) =>
@@ -187,6 +193,7 @@ class EvaluationPageState extends State<EvaluationPage> {
                               onSelected: (bool selected) {
                                 setState(() {
                                   selectedValue = selected ? index : null;
+                                  // Emoji-Index 0 bis 4 wird als Bewertung 1 bis 5 abgelegt.
                                   results
                                       .putIfAbsent(
                                         widget
@@ -201,6 +208,8 @@ class EvaluationPageState extends State<EvaluationPage> {
                                   currentQuestion += 1;
                                   selectedValue = null;
                                 } else {
+                                  // Die Dankeseite liegt über dieser Seite; Antworten bleiben erhalten.
+                                  // Nach der Rückkehr beginnt die nächste Person wieder bei Frage 1.
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

@@ -5,6 +5,7 @@ import 'pages/settingsPage.dart';
 import 'pages/selectEvaluationPage.dart';
 import 'pages/selectResultPage.dart';
 
+// Zentrale Farbgestaltung, damit alle Seiten dasselbe helle bzw. dunkle Theme verwenden.
 class AppTheme {
   static const Color seed = Color(0xFF5850DF);
 
@@ -36,9 +37,11 @@ class AppTheme {
 }
 
 void main() async {
+  // Initialisiert Flutter vor dem Speicherzugriff und lädt das Theme vor der ersten Anzeige.
   WidgetsFlutterBinding.ensureInitialized();
   await themeNotifier.loadMode();
 runApp(
+  // Änderungen aus den Einstellungen bauen MaterialApp mit dem gewählten Theme neu auf.
   ListenableBuilder(
     listenable: themeNotifier,
     builder: (context, child) {
@@ -63,6 +66,7 @@ class LecturaApp extends StatefulWidget {
 class LecturaAppState extends State<LecturaApp> {
   LecturaAppState();
 
+  // Jede Verwaltungsaktion verbindet Beschriftung und Symbol mit ihrer Zielseite.
   List<Map<String, dynamic>> items = [
     {
       'title': 'Auswertung',
@@ -147,6 +151,7 @@ class LecturaAppState extends State<LecturaApp> {
   }
 }
 
+// Wiederverwendbare Menükarte: öffnet beim Antippen die übergebene Seite.
 class ListCard extends StatelessWidget {
   final IconData icon;
   final String title;

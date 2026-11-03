@@ -5,6 +5,7 @@ import 'package:lectura/objects.dart';
 import 'package:http/http.dart' as http;
 import 'package:lectura/variables.dart';
 
+// Meldet API-Fehler über den gemeinsamen errorNotifier an die angemeldeten Seiten.
 class ErrorNotifier with ChangeNotifier {
   String errorMessage = "";
 
@@ -16,11 +17,13 @@ class ErrorNotifier with ChangeNotifier {
   }
 }
 
+// Lädt den Fragenkatalog; die Seiten verwenden Question-Objekte statt roher JSON-Daten.
 Future<List<Question>> getQuestions() async {
   final uri = Uri.parse('$baseUrl/questions');
 
   List<Question> questions = [];
   try {
+    // Begrenzt die Wartezeit, damit eine ausbleibende Antwort als Fehler gemeldet wird.
     final response = await http.get(uri).timeout(
         Duration(seconds: timeoutDuration));
 
@@ -38,6 +41,7 @@ Future<List<Question>> getQuestions() async {
   return questions;
 }
 
+// Löst eine Fragen-ID in den Fragetext auf; lädt dafür den ganzen Katalog.
 Future<Question?> getQuestionById(String questionId) async {
   final questions = await getQuestions();
 
@@ -50,6 +54,7 @@ Future<Question?> getQuestionById(String questionId) async {
   return null;
 }
 
+// Liefert Vorlagen für die Startauswahl und die Zuordnung gespeicherter Ergebnisse.
 Future<List<Evaluation>> getEvaluations() async {
 final uri = Uri.parse('$baseUrl/evaluations');
 
@@ -77,6 +82,7 @@ final uri = Uri.parse('$baseUrl/evaluations');
   return evaluations;
 }
 
+// Speichert Name und Fragen-IDs als Vorlage; Antworten werden getrennt gespeichert.
 Future<Evaluation> createEvaluation(
   String name,
   List<String> questionIds,
@@ -101,6 +107,7 @@ Future<Evaluation> createEvaluation(
   return Evaluation.fromJson(jsonMap);
 }
 
+// Lädt gespeicherte Antwortsammlungen für die Übersicht der Auswertungen.
 Future<List<EvaluationResult>> getEvaluationResults() async {
   final uri = Uri.parse('$baseUrl/results');
   List<dynamic> jsonList = [];
@@ -125,6 +132,7 @@ Future<List<EvaluationResult>> getEvaluationResults() async {
       .toList();
 }
 
+// Verknüpft Antworten über evaluationId mit ihrer Vorlage und sendet sie als JSON.
 Future<EvaluationResult> createEvaluationResult(
   String evaluationId,
   Map<String, List<int>> results,

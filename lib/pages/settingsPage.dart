@@ -37,6 +37,7 @@ class ModeRadioSwitchState extends State<ModeRadioSwitch> {
     return RadioGroup<ThemeMode>(
       groupValue: mode,
       onChanged: (ThemeMode? value) {
+        // storage.dart speichert die Auswahl; der Notifier aktualisiert das App-Theme in main.dart.
         themeNotifier.setMode(value ?? ThemeMode.system);
         setState(() {
           mode = value;

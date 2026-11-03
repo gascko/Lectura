@@ -15,6 +15,7 @@ class FinishEvaluationPageState extends State<FinishEvaluationPage> {
   @override
   void initState() {
     super.initState();
+    // Nach der Übergabepause wird diese Seite geschlossen; darunter wartet die Umfrage.
     timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (counter <= 0) {
         Navigator.pop(context);
@@ -28,6 +29,7 @@ class FinishEvaluationPageState extends State<FinishEvaluationPage> {
 
   @override
   void dispose() {
+    // Verhindert weitere Timer-Aufrufe, wenn die Seite nicht mehr angezeigt wird.
     timer?.cancel();
     super.dispose();
   }
@@ -42,6 +44,7 @@ class FinishEvaluationPageState extends State<FinishEvaluationPage> {
           return ListView(
             padding: const EdgeInsets.all(10),
             children: [
+              // Füllt die sichtbare Höhe zum Zentrieren; bei Platzmangel bleibt die Liste scrollbar.
               ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - 20,

@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
+// Verbindet die lokal gespeicherte Theme-Auswahl mit dem ListenableBuilder in main.dart.
 class ColorThemeNotifier with ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
   ThemeMode get mode => themeMode;
