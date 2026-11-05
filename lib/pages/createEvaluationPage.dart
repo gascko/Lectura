@@ -122,7 +122,9 @@ class CreateEvaluationPageState extends State<CreateEvaluationPage> {
                       if (value == null || value.trim().isEmpty) {
                         return "Bitte vergebe noch einen Namen für die Evaluation";
                       }
-                      return null;
+                      else {
+                        return null;
+                      }
                     },
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),

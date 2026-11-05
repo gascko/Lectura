@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:lectura/objects.dart';
 import 'package:http/http.dart' as http;
 import 'package:lectura/variables.dart';
+//import 'package:flutter/services.dart'; /* Nur bei lokaler Anwendung ohne Cloud */
+
 
 // Meldet API-Fehler über den gemeinsamen errorNotifier an die angemeldeten Seiten.
 /// @brief Stellt API-Fehlermeldungen für die Oberfläche bereit.
@@ -193,8 +195,6 @@ Future<EvaluationResult> createEvaluationResult(
 /* ####################### Debug Funktionen mit lokalen JSON Dateien ######################## */
 
 /*
-import 'package:flutter/services.dart';
-
 Future<List<Question>> getQuestions() async {
  final String response = await rootBundle.loadString(
    'assets/questionsInit.json',
@@ -205,11 +205,16 @@ Future<List<Question>> getQuestions() async {
      .toList();
  return questions;
 }
+*/
+
+/*
 bool createEvaluation(String name, List<String> questionIds) {
- print("Gespeichert trust");
+ print("Gespeichert");
  return true;
 }
+*/
 
+/*
 Future<List<EvaluationResult>> getEvaluationResults() async {
  final String response = await rootBundle.loadString(
    'assets/evaluationResultInit.json',
@@ -220,7 +225,9 @@ Future<List<EvaluationResult>> getEvaluationResults() async {
      .toList();
  return evaluationResults;
 }
+*/
 
+/*
 Future<List<Evaluation>> getEvaluations() async {
   final String response = await rootBundle.loadString(
     'assets/evaluationInit.json',
@@ -231,7 +238,9 @@ Future<List<Evaluation>> getEvaluations() async {
       .toList();
   return evaluations;
 }
+*/
 
+/*
 Future<Question?> getQuestionById(String questionId) async {
   final String response = await rootBundle.loadString(
     'assets/questionsInit.json',

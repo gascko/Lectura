@@ -52,10 +52,16 @@ class FinishEvaluationPageState extends State<FinishEvaluationPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.check_circle_rounded,
-                      color: Colors.green,
-                      size: 200,
+
+                    GestureDetector(
+                      onTap: () { setState(() {
+                        counter = 0;
+                      }); },
+                      child: const Icon(
+                        Icons.check_circle_rounded,
+                        color: Colors.green,
+                        size: 200,
+                      ),
                     ),
                     const Text(
                       "Danke für dein Feedback",
@@ -72,6 +78,10 @@ class FinishEvaluationPageState extends State<FinishEvaluationPage> {
                     const SizedBox(height: 30),
                     Text(
                       "Nächste Umfrage startet automatisch in ${counter} Sekunden...",
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "(Zum Überspringen den grünen Haken anklicken)",
                       textAlign: TextAlign.center,
                     ),
                   ],
