@@ -2,6 +2,10 @@
 
 Lectura ist eine einfache App zum Auswerten von Vorlesungen
 
+| Startseite                          | Neue Evaluation anlegen                         | Evaluation auswählen                                | Evaluation durchführen                        | Evaluation auswerten                               | Vergangene Auswertungen ansehen                 | Einstellungen                                |
+|-------------------------------------|-------------------------------------------------|-----------------------------------------------------|-----------------------------------------------|----------------------------------------------------|-------------------------------------------------|----------------------------------------------|
+| <img src="./assets/images/main.png>" | <img src="./assets/images/createEvaluation.png>" | <img src="./assets/images/selectEvaluationPage.png>" | <img src="./assets/images/evaluationPage.png>" | <img src="./assets/images/evaluationResultPage.png>" | <img src="./assets/images/selectResultPage.png>" | <img src="./assets/images/settingsPage.png>" |
+
 ## Abhängigkeiten
 
 ````shell
